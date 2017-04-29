@@ -1,0 +1,39 @@
+.main-footer {
+  bottom: 0;
+  position: fixed;
+  background-color: lightgrey;
+  width: 100%;
+  margin: 0; }
+
+#user-wrapper {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  text-align: center; }
+  #user-wrapper .form-wrapper {
+    display: inline-block;
+    width: 320px;
+    padding: 200px 0; }
+    #user-wrapper .form-wrapper form {
+      text-align: left; }
+      #user-wrapper .form-wrapper form label {
+        width: 110px;
+        margin-bottom: 20px; }
+      #user-wrapper .form-wrapper form input {
+        width: 204px;
+        box-sizing: border-box;
+        margin-bottom: 20px; }
+      #user-wrapper .form-wrapper form .remember-me-wrapper {
+        display: inline-block;
+        width: 100%;
+        text-align: center; }
+      #user-wrapper .form-wrapper form .submit-wrapper {
+        display: inline-block;
+        width: 100%;
+        text-align: center; }
+        #user-wrapper .form-wrapper form .submit-wrapper #_submit {
+          margin: 0 auto;
+          width: auto; }
+
+/*# sourceMappingURL=user.css.map */

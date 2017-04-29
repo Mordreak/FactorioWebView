@@ -1,3 +1,6 @@
 fwv_manager:
     resource: "@FWVManagerBundle/Resources/config/routing.yml"
     prefix:   /
+
+fos_user:
+    resource: "@FWVUserBundle/Resources/config/routing.xml"

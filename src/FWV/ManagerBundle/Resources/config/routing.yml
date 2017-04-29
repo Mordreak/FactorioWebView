@@ -1,3 +1,19 @@
 fwv_manager_homepage:
     path:     /
     defaults: { _controller: FWVManagerBundle:Manager:index }
+
+fwv_manager_start_server:
+    path:     /start-server
+    defaults: { _controller: FWVManagerBundle:Manager:startServer }
+
+fwv_manager_stop_server:
+     path:     /stop-server
+     defaults: { _controller: FWVManagerBundle:Manager:stopServer }
+
+fwv_manager_restart_server:
+     path:     /restart-server
+     defaults: { _controller: FWVManagerBundle:Manager:restartServer }
+
+fwv_manager_get_saves:
+    path:     /saves
+    defaults: { _controller: FWVManagerBundle:Manager:getSaves }

@@ -1,0 +1,46 @@
+.main-footer {
+  bottom: 0;
+  position: fixed;
+  background-color: lightgrey;
+  width: 100%;
+  margin: 0;
+}
+
+#user-wrapper {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  text-align: center;
+  .form-wrapper {
+    display: inline-block;
+    width: 320px;
+    padding: 200px 0;
+    form {
+      text-align: left;
+      label {
+        width: 110px;
+        margin-bottom: 20px;
+      }
+      input {
+        width: 204px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+      }
+      .remember-me-wrapper {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+      }
+      .submit-wrapper {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        #_submit {
+          margin: 0 auto;
+          width: auto;
+        }
+      }
+    }
+  }
+}

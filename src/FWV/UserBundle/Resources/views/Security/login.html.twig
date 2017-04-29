@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+
+{% block css %}
+    <link href="{{ asset('lib/local/css/user.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block body %}
+    <div id="user-wrapper">
+        <div class="form-wrapper">
+            {{ include('@FOSUser/Security/login_content.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
