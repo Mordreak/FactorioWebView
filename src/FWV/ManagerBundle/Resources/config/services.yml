@@ -1,0 +1,4 @@
+services:
+#    fwv_manager.example:
+#        class: FWV\ManagerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

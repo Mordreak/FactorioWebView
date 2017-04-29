@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factorio Web View | {% block title %}Dashboard{% endblock %}</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    {% include "css.html.twig" %}
+    {% block css %}{% endblock %}
+</head>
+<body class="skin-blue">
+
+<div class="wrapper">
+
+    {% include "header.html.twig" %}
+
+    {% block body %}{% endblock %}
+
+    {% include "footer.html.twig" %}
+
+</div><!-- ./wrapper -->
+
+{% include "js.html.twig" %}
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>
