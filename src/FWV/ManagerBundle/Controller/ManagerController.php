@@ -33,7 +33,7 @@ class ManagerController extends Controller
             ));
         }
         try {
-            $manager->startServer('newgame');
+            $manager->startServer('newgame', $this->get('logger'));
         } catch (Exception $e) {
             return new JsonResponse(array(
                 'done' => false,

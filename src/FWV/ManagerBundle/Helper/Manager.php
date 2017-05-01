@@ -16,7 +16,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Manager
 {
-    public function startServer($saveName)
+    public function startServer($saveName, $logger)
     {
         if (!$this->saveExists($saveName))
             throw new InvalidArgumentException('Le fichier de sauvegarde n\'existe pas.');
@@ -27,8 +27,10 @@ class Manager
         } catch (ProcessTimedOutException $e) {
             if ($this->isServerRunning())
                 return $process->getOutput();
-            else
+            else {
+                $logger->error($process->getOutput());
                 throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
+            }
         }
 
         if ($this->isServerRunning())
@@ -39,8 +41,10 @@ class Manager
             throw new ProcessFailedException($process);
         }
 
-        if (!$this->isServerRunning())
+        if (!$this->isServerRunning()) {
+            $logger->error($process->getOutput());
             throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
+        }
 
         return $process->getOutput();
     }
