@@ -21,7 +21,7 @@ class Manager
         if (!$this->saveExists($saveName))
             throw new InvalidArgumentException('Le fichier de sauvegarde n\'existe pas.');
 
-        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > logs/' . $saveName . '.log &', '/factorio', null, null, 3, array());
+        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > ./logs/' . $saveName . '.log &', '/factorio', null, null, 3, array());
         try {
             $process->run();
         } catch (ProcessTimedOutException $e) {
