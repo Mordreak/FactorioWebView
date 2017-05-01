@@ -42,7 +42,7 @@ class Manager
         }
 
         if (!$this->isServerRunning()) {
-            $logger->error('Server not running: ' . $process->getOutput());
+            $logger->error('Server not running: ' . './bin/x64/factorio --start-server ' . $saveName . ' > logs/' . $saveName . '.log &');
             throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
         }
 
