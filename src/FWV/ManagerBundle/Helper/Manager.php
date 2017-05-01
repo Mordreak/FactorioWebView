@@ -42,7 +42,7 @@ class Manager
         if ($this->isServerRunning())
             return $process->getOutput();
 
-        throw new ProcessFailedException($process);
+        throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
     }
 
     public function stopServer()
