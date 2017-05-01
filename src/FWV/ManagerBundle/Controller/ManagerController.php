@@ -33,7 +33,7 @@ class ManagerController extends Controller
             ));
         }
         try {
-            $manager->startServer('newgame', $this->get('logger'));
+            $manager->startServer(null, $this->get('logger'));
         } catch (Exception $e) {
             return new JsonResponse(array(
                 'done' => false,
@@ -85,7 +85,7 @@ class ManagerController extends Controller
             ));
         }
         try {
-            $manager->restartServer();
+            $manager->restartServer($this->get('logger'));
         } catch (Exception $e) {
             return new JsonResponse(array(
                 'done' => false,

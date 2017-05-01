@@ -79,4 +79,14 @@
   background-origin: content-box;
   padding-right: 20px; }
 
+.btn-info {
+  background-color: grey;
+  border-color: grey;
+  height: 22px;
+  line-height: 22px; }
+
+.btn-info:hover {
+  background-color: lightgrey;
+  border-color: lightgrey; }
+
 /*# sourceMappingURL=style.css.map */

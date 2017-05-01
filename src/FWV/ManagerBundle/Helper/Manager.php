@@ -16,8 +16,11 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Manager
 {
-    public function startServer($saveName, $logger)
+    public function startServer($saveName = null, $logger)
     {
+        if (empty($saveName))
+            $saveName = $this->getLastUsedSave()['name'];
+
         if (!$this->saveExists($saveName))
             throw new InvalidArgumentException('Le fichier de sauvegarde n\'existe pas.');
 
@@ -112,10 +115,10 @@ class Manager
         return false;
     }
 
-    public function restartServer()
+    public function restartServer($logger)
     {
         $this->stopServer();
-        return $this->startServer($this->getLastUsedSave()['name']);
+        return $this->startServer(null, $logger);
     }
 
     public function getSaves()
