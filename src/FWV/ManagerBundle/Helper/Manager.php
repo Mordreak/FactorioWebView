@@ -28,7 +28,7 @@ class Manager
             if ($this->isServerRunning())
                 return $process->getOutput();
             else {
-                $logger->error($process->getOutput());
+                $logger->error('timedOut: ' . $process->getOutput());
                 throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
             }
         }
@@ -42,7 +42,7 @@ class Manager
         }
 
         if (!$this->isServerRunning()) {
-            $logger->error($process->getOutput());
+            $logger->error('Server not running: ' . $process->getOutput());
             throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
         }
 
