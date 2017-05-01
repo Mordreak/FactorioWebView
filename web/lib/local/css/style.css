@@ -72,4 +72,11 @@
   height: 19px;
   line-height: 19px; }
 
+.small-box .inner {
+  background-position: center right;
+  background-size: 60px;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  padding-right: 20px; }
+
 /*# sourceMappingURL=style.css.map */

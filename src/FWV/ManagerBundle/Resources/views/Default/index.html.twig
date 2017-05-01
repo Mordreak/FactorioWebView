@@ -22,7 +22,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-green">
-                        <div class="inner">
+                        <div class="inner start">
                             <h3>Start</h3>
                             <p>Lancer</p>
                         </div>
@@ -36,7 +36,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-yellow">
-                        <div class="inner">
+                        <div class="inner restart">
                             <h3>Restart</h3>
                             <p>Redémarrer</p>
                         </div>
@@ -50,7 +50,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-red">
-                        <div class="inner">
+                        <div class="inner stop">
                             <h3>Stop</h3>
                             <p>Eteindre</p>
                         </div>
@@ -116,11 +116,11 @@
                 savesUrl: '{{ path('fwv_manager_get_saves') }}'
             });
             $('#save-creation-button').createGame({
-                createUrl: '{{ path('fwv_manager_create_game') }}'
+                createUrl: '{{ path('fwv_manager_create_game') }}',
+                savesUrl: '{{ path('fwv_manager_get_saves') }}'
             });
             var widget = $("#save-creation-button").data("custom-createGame");
             $('#saves-title').on('click', 'i', function () {
-                console.log('ok1');
                 widget.saves('{{ path('fwv_manager_get_saves') }}');
             });
         });

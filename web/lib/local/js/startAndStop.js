@@ -28,6 +28,8 @@ $( function() {
         start: function (event) {
             var urlRequest = this.options.startUrl;
             var current = this;
+            $('.inner.start').parent().find('.icon i').hide();
+            $('.inner.start').css('background-image', 'url(\'/lib/local/img/reload-white.gif\')');
             $.ajax({
                 url: urlRequest,
                 type: 'GET',
@@ -45,6 +47,8 @@ $( function() {
                 },
 
                 complete: function (result) {
+                    $('.inner.start').css('background-image', 'none');
+                    $('.inner.start').parent().find('.icon i').show();
                     current._refresh();
                 }
             });
@@ -53,6 +57,8 @@ $( function() {
         stop: function (event) {
             var urlRequest = this.options.stopUrl;
             var current = this;
+            $('.inner.stop').parent().find('.icon i').hide();
+            $('.inner.stop').css('background-image', 'url(\'/lib/local/img/reload-white.gif\')');
             $.ajax({
                 url: urlRequest,
                 type: 'GET',
@@ -70,6 +76,8 @@ $( function() {
                 },
 
                 complete: function (result) {
+                    $('.inner.stop').css('background-image', 'none');
+                    $('.inner.stop').parent().find('.icon i').show();
                     current._refresh();
                 }
             });
@@ -78,6 +86,8 @@ $( function() {
         restart: function (event) {
             var urlRequest = this.options.restartUrl;
             var current = this;
+            $('.inner.restart').parent().find('.icon i').hide();
+            $('.inner.restart').css('background-image', 'url(\'/lib/local/img/reload-white.gif\')');
             $.ajax({
                 url: urlRequest,
                 type: 'GET',
@@ -95,6 +105,8 @@ $( function() {
                 },
 
                 complete: function (result) {
+                    $('.inner.restart').css('background-image', 'none');
+                    $('.inner.restart').parent().find('.icon i').show();
                     current._refresh();
                 }
             });

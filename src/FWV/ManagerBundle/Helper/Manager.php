@@ -108,11 +108,12 @@ class Manager
     public function restartServer()
     {
         $this->stopServer();
-        return $this->startServer($this->getLastUsedSave());
+        return $this->startServer($this->getLastUsedSave()['name']);
     }
 
     public function getSaves()
     {
+        sleep(1);
         $finder = new Finder();
         $finder->files()->in('/factorio/saves')->name('*.zip')->sortByAccessedTime();
         $files = array();
@@ -136,6 +137,9 @@ class Manager
 
     public function createGame($saveName)
     {
+        if ($this->saveExists($saveName))
+            throw new \Exception('Une partie avec ce nom existe déjà');
+
         if ($this->isServerRunning())
             $this->stopServer();
 
@@ -150,7 +154,7 @@ class Manager
             throw new ProcessFailedException($creatingProcess);
         }
 
-        $movingProcess = new Process('mv ' . $saveName . '.zip ./saves/' . $saveName . '.zip', '/factorio', null, null, 2, array());
+        $movingProcess = new Process('mv ' . $saveName . '.zip ./saves/' . $saveName . '.zip', '/factorio', null, null, 1, array());
         try {
             $movingProcess->run();
         } catch (ProcessTimedOutException $e) {

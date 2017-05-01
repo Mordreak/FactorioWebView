@@ -1,7 +1,8 @@
 $( function() {
     $.widget("custom.createGame", {
         options: {
-            createUrl: null
+            createUrl: null,
+            savesUrl: null
         },
 
         _create: function () {
@@ -45,7 +46,6 @@ $( function() {
         },
 
         saves: function(urlRequest) {
-            console.log('ok');
             if (urlRequest === undefined)
                 urlRequest = this.options.savesUrl;
             $('#saves-title i').hide();
@@ -71,10 +71,8 @@ $( function() {
                 },
 
                 complete: function (result) {
-                    setTimeout(function(){
-                        $('#saves-title').css('background-image', 'none');
-                        $('#saves-title i').show();
-                    }, 2000);
+                    $('#saves-title').css('background-image', 'none');
+                    $('#saves-title i').show();
                 }
             });
         },
