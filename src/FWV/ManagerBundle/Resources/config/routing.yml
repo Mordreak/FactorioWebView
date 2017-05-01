@@ -21,3 +21,7 @@ fwv_manager_get_saves:
 fwv_manager_create_game:
     path:     /create
     defaults: { _controller: FWVManagerBundle:Manager:createGame }
+
+fwv_manager_check_server:
+    path:     /check-server
+    defaults: { _controller: FWVManagerBundle:Manager:isServerOn }

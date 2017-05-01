@@ -52,39 +52,36 @@ $( function() {
         },
 
         saves: function(urlRequest) {
-            if (request == null) {
-                if (urlRequest === undefined)
-                    urlRequest = this.options.savesUrl;
-                $('#saves-title i').hide();
-                $('#saves-title').css('background-image', 'url(\'/lib/local/img/load-tiny.gif\')');
-                request = $.ajax({
-                    url: urlRequest,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (result) {
-                        if (result['done'] == true) {
-                            var content = '';
-                            $.each(result['saves'], function (index, value) {
-                                content += '<tr>\
-                                <td>' + value['name'] + '</td>\
-                                <td><span class="label label-success">' + value['time'] + '</span></td>\
-                                <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
-                            </tr>'
-                            });
-                            $('#saves').html(content);
-                        }
-                    },
-
-                    error: function (result) {
-                    },
-
-                    complete: function (result) {
-                        $('#saves-title').css('background-image', 'none');
-                        $('#saves-title i').show();
-                        request = null;
+            if (urlRequest === undefined)
+                urlRequest = this.options.savesUrl;
+            $('#saves-title i').hide();
+            $('#saves-title').css('background-image', 'url(\'/lib/local/img/load-tiny.gif\')');
+            $.ajax({
+                url: urlRequest,
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    if (result['done'] == true) {
+                        var content = '';
+                        $.each(result['saves'], function (index, value) {
+                            content += '<tr>\
+                            <td>' + value['name'] + '</td>\
+                            <td><span class="label label-success">' + value['time'] + '</span></td>\
+                            <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
+                        </tr>'
+                        });
+                        $('#saves').html(content);
                     }
-                });
-            }
+                },
+
+                error: function (result) {
+                },
+
+                complete: function (result) {
+                    $('#saves-title').css('background-image', 'none');
+                    $('#saves-title i').show();
+                }
+            });
         },
 
         _destroy: function () {

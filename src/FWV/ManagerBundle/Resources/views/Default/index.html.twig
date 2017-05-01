@@ -109,9 +109,11 @@
 {% block javascripts %}
     <script type="text/javascript">
         var request = null;
+        var checkRequest = null;
     </script>
     <script src="{{ asset('lib/local/js/startAndStop.js') }}"></script>
     <script src="{{ asset('lib/local/js/createGame.js') }}"></script>
+    <script src="{{ asset('lib/local/js/serverIsLive.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('#start-and-stop').startAndStop({
@@ -132,6 +134,9 @@
             $('#saves').on('click', 'tr td .label.label-info', function() {
                 manageWidget.start(this.id);
             });
+            window.setInterval(function(){
+                isServerLive('{{ path('fwv_manager_check_server') }}');
+            }, 3000);
         });
     </script>
 {% endblock %}

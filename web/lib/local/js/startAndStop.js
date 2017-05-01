@@ -28,7 +28,7 @@ $( function() {
         start: function (saveName) {
             if (request == null) {
                 var confirmation = true;
-                if (saveName != undefined && saveName != null) {
+                if (typeof saveName == 'string') {
                     var datas = {savename: saveName};
                     confirmation = confirm("Attention, ceci va redémarrer le serveur !\nVoulez-vous vraiment continuer?");
                 }
@@ -44,7 +44,7 @@ $( function() {
                         dataType: 'json',
                         success: function (result) {
                             if (result['done'] == true) {
-                                if (saveName != undefined && saveName != null) {
+                                if (typeof saveName == 'string') {
                                     popupMe('Sauvegarde chargée avec succès');
                                 } else
                                     popupMe('Serveur démarré avec succès');
@@ -133,38 +133,35 @@ $( function() {
         },
 
         _saves: function() {
-            if (request == null) {
-                var urlRequest = this.options.savesUrl;
-                $('#saves-title i').hide();
-                $('#saves-title').css('background-image', 'url(\'/lib/local/img/load-tiny.gif\')');
-                request = $.ajax({
-                    url: urlRequest,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (result) {
-                        if (result['done'] == true) {
-                            var content = '';
-                            $.each(result['saves'], function (index, value) {
-                                content += '<tr>\
-                                <td>' + value['name'] + '</td>\
-                                <td><span class="label label-success">' + value['time'] + '</span></td>\
-                                <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
-                            </tr>'
-                            });
-                            $('#saves').html(content);
-                        }
-                    },
-
-                    error: function (result) {
-                    },
-
-                    complete: function (result) {
-                        $('#saves-title').css('background-image', 'none');
-                        $('#saves-title i').show();
-                        request = null;
+            var urlRequest = this.options.savesUrl;
+            $('#saves-title i').hide();
+            $('#saves-title').css('background-image', 'url(\'/lib/local/img/load-tiny.gif\')');
+            $.ajax({
+                url: urlRequest,
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    if (result['done'] == true) {
+                        var content = '';
+                        $.each(result['saves'], function (index, value) {
+                            content += '<tr>\
+                            <td>' + value['name'] + '</td>\
+                            <td><span class="label label-success">' + value['time'] + '</span></td>\
+                            <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
+                        </tr>'
+                        });
+                        $('#saves').html(content);
                     }
-                });
-            }
+                },
+
+                error: function (result) {
+                },
+
+                complete: function (result) {
+                    $('#saves-title').css('background-image', 'none');
+                    $('#saves-title i').show();
+                }
+            });
         },
 
         _destroy: function () {

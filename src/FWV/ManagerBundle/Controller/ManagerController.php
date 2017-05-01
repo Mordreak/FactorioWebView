@@ -154,4 +154,24 @@ class ManagerController extends Controller
             'done' => true
         ));
     }
+
+    public function isServerOnAction(Request $request)
+    {
+        if (!$request->isXMLHttpRequest()) {
+            return new Response('This is not ajax!', 400);
+        }
+        $manager = $this->container->get('fwv_manager.helper');
+        try {
+            $answer = $manager->isServerRunning() ? true : false;
+        } catch (Exception $e) {
+            return new JsonResponse(array(
+                'done' => false,
+                'answer' => $e->getMessage()
+            ));
+        }
+        return new JsonResponse(array(
+            'done' => true,
+            'answer' => $answer
+        ));
+    }
 }
