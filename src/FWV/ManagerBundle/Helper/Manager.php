@@ -39,10 +39,10 @@ class Manager
             throw new ProcessFailedException($process);
         }
 
-        if ($this->isServerRunning())
-            return $process->getOutput();
+        if (!$this->isServerRunning())
+            throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
 
-        throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
+        return $process->getOutput();
     }
 
     public function stopServer()
@@ -77,6 +77,9 @@ class Manager
         if (!$process->isSuccessful()) {
             return false;
         }
+
+        if ($process->getOutput() === '1' || $process->getOutput() === 1)
+            return false;
 
         return $process->getOutput();
     }
