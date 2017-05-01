@@ -24,7 +24,7 @@
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h3>Start</h3>
-                            <p>Lancer le serveur</p>
+                            <p>Lancer</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-checkmark-circled"></i>
@@ -38,7 +38,7 @@
                     <div class="small-box bg-yellow">
                         <div class="inner">
                             <h3>Restart</h3>
-                            <p>Redémarrer le serveur</p>
+                            <p>Redémarrer</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-refresh"></i>
@@ -52,7 +52,7 @@
                     <div class="small-box bg-red">
                         <div class="inner">
                             <h3>Stop</h3>
-                            <p>Eteindre le serveur</p>
+                            <p>Eteindre</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-close-circled"></i>
@@ -67,7 +67,7 @@
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Sauvegardes des parties</h3>
+                            <h3 id="saves-title" class="box-title">Sauvegardes des parties <i class="ion ion-refresh" id="refresh-saves"></i></h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
@@ -77,11 +77,10 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table class="table no-margin" id="saves-table">
                                     <thead>
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Dernière utilisation</th>
+                                        <th><span>Nom</span><span>Dernière utilisation</span></th>
                                     </tr>
                                     </thead>
                                     <tbody id="saves">
@@ -96,7 +95,8 @@
                             </div><!-- /.table-responsive -->
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left">Créer une nouvelle partie</a>
+                            <input type="text" name="message" placeholder="MaSuperPartie ..." class="form-control" id="savename-input">
+                            <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Créer une nouvelle partie</a>
                         </div><!-- /.box-footer -->
                     </div><!-- /.box -->
                 </div><!-- /.row -->
@@ -106,6 +106,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('lib/local/js/startAndStop.js') }}"></script>
+    <script src="{{ asset('lib/local/js/createGame.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('#start-and-stop').startAndStop({
@@ -113,6 +114,14 @@
                 restartUrl: '{{ path('fwv_manager_restart_server') }}',
                 stopUrl: '{{ path('fwv_manager_stop_server') }}',
                 savesUrl: '{{ path('fwv_manager_get_saves') }}'
+            });
+            $('#save-creation-button').createGame({
+                createUrl: '{{ path('fwv_manager_create_game') }}'
+            });
+            var widget = $("#save-creation-button").data("custom-createGame");
+            $('#saves-title').on('click', 'i', function () {
+                console.log('ok1');
+                widget.saves('{{ path('fwv_manager_get_saves') }}');
             });
         });
     </script>

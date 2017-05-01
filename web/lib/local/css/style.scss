@@ -1,6 +1,6 @@
 #popup-notification {
   width: 500px;
-  position: absolute;
+  position: fixed;
   z-index: 2000;
   background: rgba(255, 255, 255, 0.5);
   left: 50%;
@@ -23,10 +23,78 @@
     width: 280px;
     margin-left: -140px;
     height: 120px;
+    background: rgba(255, 255, 255, 0.9);
     span {
       height: 100px;
       line-height: normal;
       padding-top: 40px;
     }
   }
+}
+
+.box-footer {
+  input {
+    max-width: 300px;
+    float: left;
+  }
+  a {
+    float: left;
+    height: 34px;
+  }
+  @media all and (max-width: 500px) {
+    text-align: center;
+    input {
+      float: none;
+      margin: 0 auto;
+    }
+    a {
+      float: none !important;
+      margin: 0 auto;
+    }
+  }
+}
+
+#saves-table {
+  thead {
+    tr {
+      th {
+        span {
+          display: inline-block;
+          width: 50%;
+        }
+      }
+    }
+  }
+  #saves {
+    max-height: 185px;
+    overflow-y: auto;
+    display: block;
+    tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+  }
+}
+
+@media all and (max-width: 500px) {
+  #start-and-stop {
+    .col-lg-3.col-xs-6 {
+      width: 100%;
+    }
+  }
+}
+
+#refresh-saves {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#saves-title {
+  padding-right: 30px;
+  background-position: center right;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 19px;
+  line-height: 19px;
 }

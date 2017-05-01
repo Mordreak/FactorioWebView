@@ -16,12 +16,12 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Manager
 {
-    public function startServer($saveName = null)
+    public function startServer($saveName)
     {
         if (!$this->saveExists($saveName))
             throw new InvalidArgumentException('Le fichier de sauvegarde n\'existe pas.');
 
-        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > ' . $saveName . '.log &', '/factorio', null, null, 3, array());
+        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > logs/' . $saveName . '.log &', '/factorio', null, null, 3, array());
         try {
             $process->run();
         } catch (ProcessTimedOutException $e) {
@@ -108,7 +108,7 @@ class Manager
     public function restartServer()
     {
         $this->stopServer();
-        return $this->startServer();
+        return $this->startServer($this->getLastUsedSave());
     }
 
     public function getSaves()
@@ -123,5 +123,46 @@ class Manager
             $i++;
         }
         return array_reverse($files);
+    }
+
+    public function getLastUsedSave()
+    {
+        $saves = $this->getSaves();
+        if (count($saves)) {
+            return $saves[0];
+        }
+        return null;
+    }
+
+    public function createGame($saveName)
+    {
+        if ($this->isServerRunning())
+            $this->stopServer();
+
+        $creatingProcess = new Process('./bin/x64/factorio --create ' . $saveName . ' ./saves/' . $saveName . '.zip', '/factorio', null, null, 4, array());
+        try {
+            $creatingProcess->run();
+        } catch (ProcessTimedOutException $e) {
+            throw new ProcessFailedException($creatingProcess);
+        }
+
+        if (!$creatingProcess->isSuccessful()) {
+            throw new ProcessFailedException($creatingProcess);
+        }
+
+        $movingProcess = new Process('mv ' . $saveName . '.zip ./saves/' . $saveName . '.zip', '/factorio', null, null, 2, array());
+        try {
+            $movingProcess->run();
+        } catch (ProcessTimedOutException $e) {
+            throw new ProcessFailedException($movingProcess);
+        }
+
+        if (!$movingProcess->isSuccessful()) {
+            throw new ProcessFailedException($movingProcess);
+        }
+
+        if (!$this->saveExists($saveName)) {
+            throw new \Exception('La partie n\'a pas pu être générée.');
+        }
     }
 }

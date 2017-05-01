@@ -17,3 +17,7 @@ fwv_manager_restart_server:
 fwv_manager_get_saves:
     path:     /saves
     defaults: { _controller: FWVManagerBundle:Manager:getSaves }
+
+fwv_manager_create_game:
+    path:     /create
+    defaults: { _controller: FWVManagerBundle:Manager:createGame }
