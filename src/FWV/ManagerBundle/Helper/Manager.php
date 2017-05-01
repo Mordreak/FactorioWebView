@@ -58,8 +58,11 @@ class Manager
         try {
             $process->run();
         } catch (ProcessTimedOutException $e) {
-            if ($this->isServerRunning())
-                throw new ProcessFailedException($process);
+            if ($this->isServerRunning()) {
+                $this->forceStop();
+                if ($this->isServerRunning())
+                    throw new \Exception('Impossible d\'arrêter le serveur');
+            }
             else
                 return $process->getOutput();
         }
@@ -70,7 +73,7 @@ class Manager
             $this->forceStop();
 
         if ($this->isServerRunning())
-            throw new ProcessFailedException($process);
+            throw new \Exception('Impossible d\'arrêter le serveur');
 
         return $process->getOutput();
     }
