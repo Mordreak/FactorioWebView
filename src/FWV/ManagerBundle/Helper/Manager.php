@@ -120,7 +120,8 @@ class Manager
         foreach ($finder as $file) {
             $files[$i]['name'] = substr($file->getRelativePathname(), 0, -4);
             $files[$i]['time'] = date('d-m-Y H:i:s', fileatime($file->getRealPath()));
+            $i++;
         }
-        return $files;
+        return array_reverse($files);
     }
 }
