@@ -54,7 +54,7 @@ class Manager
 
     public function stopServer()
     {
-        $process = new Process('pkill -1 factorio', null, null, null, 3, array());
+        $process = new Process('pkill -1 factorio', null, null, null, 10, array());
         try {
             $process->run();
         } catch (ProcessTimedOutException $e) {
