@@ -28,7 +28,7 @@ class Manager
             if ($this->isServerRunning())
                 return $process->getOutput();
             else
-                throw new ProcessFailedException($process);
+                throw new \Exception('Impossible de démarrer le serveur. Contactez l\'Administrateur');
         }
 
         if ($this->isServerRunning())
@@ -144,22 +144,14 @@ class Manager
             $this->stopServer();
 
         $creatingProcess = new Process('./bin/x64/factorio --create ' . $saveName . ' ./saves/' . $saveName . '.zip', '/factorio', null, null, 4, array());
-        try {
-            $creatingProcess->run();
-        } catch (ProcessTimedOutException $e) {
-            throw new ProcessFailedException($creatingProcess);
-        }
+        $creatingProcess->run();
 
         if (!$creatingProcess->isSuccessful()) {
             throw new ProcessFailedException($creatingProcess);
         }
 
         $movingProcess = new Process('mv ' . $saveName . '.zip ./saves/' . $saveName . '.zip', '/factorio', null, null, 1, array());
-        try {
-            $movingProcess->run();
-        } catch (ProcessTimedOutException $e) {
-            throw new ProcessFailedException($movingProcess);
-        }
+        $movingProcess->run();
 
         if (!$movingProcess->isSuccessful()) {
             throw new ProcessFailedException($movingProcess);
