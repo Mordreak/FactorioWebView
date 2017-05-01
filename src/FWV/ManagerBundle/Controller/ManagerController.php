@@ -26,14 +26,24 @@ class ManagerController extends Controller
         }
 
         $manager = $this->container->get('fwv_manager.helper');
-        if ($manager->isServerRunning()) {
-            return new JsonResponse(array(
-                'done' => false,
-                'answer' => 'Le serveur est déjà démarré'
-            ));
-        }
+
         try {
-            $manager->startServer(null, $this->get('logger'));
+
+            if ($saveName = $request->get('savename')) {
+                if ($manager->isServerRunning()) {
+                    $manager->stopServer();
+                }
+                $manager->startServer($saveName, $this->get('logger'));
+            } else {
+                if ($manager->isServerRunning()) {
+                    return new JsonResponse(array(
+                        'done' => false,
+                        'answer' => 'Le serveur est déjà démarré'
+                    ));
+                }
+                $manager->startServer(null, $this->get('logger'));
+
+            }
         } catch (Exception $e) {
             return new JsonResponse(array(
                 'done' => false,

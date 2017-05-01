@@ -80,7 +80,7 @@
                                 <table class="table no-margin" id="saves-table">
                                     <thead>
                                     <tr>
-                                        <th><span>Nom</span><span>Dernière utilisation</span></th>
+                                        <th><span>Nom</span><span>Dernière utilisation</span><span>Charger une sauvegarde</span></th>
                                     </tr>
                                     </thead>
                                     <tbody id="saves">
@@ -88,6 +88,7 @@
                                         <tr>
                                             <td>{{  file['name'] }}</td>
                                             <td><span class="label label-success">{{ file['time'] }}</span></td>
+                                            <td><span class="label label-info" id="{{  file['name'] }}">Charger</span></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -100,11 +101,15 @@
                         </div><!-- /.box-footer -->
                     </div><!-- /.box -->
                 </div><!-- /.row -->
+            </div>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript">
+        var request = null;
+    </script>
     <script src="{{ asset('lib/local/js/startAndStop.js') }}"></script>
     <script src="{{ asset('lib/local/js/createGame.js') }}"></script>
     <script>
@@ -119,9 +124,13 @@
                 createUrl: '{{ path('fwv_manager_create_game') }}',
                 savesUrl: '{{ path('fwv_manager_get_saves') }}'
             });
-            var widget = $("#save-creation-button").data("custom-createGame");
+            var savesWidget = $("#save-creation-button").data("custom-createGame");
             $('#saves-title').on('click', 'i', function () {
-                widget.saves('{{ path('fwv_manager_get_saves') }}');
+                savesWidget.saves('{{ path('fwv_manager_get_saves') }}');
+            });
+            var manageWidget = $('#start-and-stop').data('custom-startAndStop');
+            $('#saves').on('click', 'tr td .label.label-info', function() {
+                manageWidget.start(this.id);
             });
         });
     </script>

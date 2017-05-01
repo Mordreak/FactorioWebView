@@ -60,7 +60,7 @@
       th {
         span {
           display: inline-block;
-          width: 50%;
+          width: 33.3333336%;
         }
       }
     }
@@ -73,6 +73,9 @@
       display: table;
       width: 100%;
       table-layout: fixed;
+      .label.label-info {
+        cursor: pointer;
+      }
     }
   }
 }
@@ -119,4 +122,35 @@
 .btn-info:hover {
   background-color: lightgrey;
   border-color: lightgrey;
+}
+
+.small-box-footer {
+  cursor: pointer;
+}
+
+.small-box.bg-grey:hover {
+  color: black!important;
+}
+
+.form-control:focus {
+  border-color: dimgrey!important;
+}
+
+.box.box-info {
+  tbody {
+    min-width: 500px;
+    overflow-x: auto;
+  }
+  thead {
+    min-width: 500px;
+    overflow-x: auto;
+  }
+}
+
+#save-creation-button:active {
+  background-color: grey;
+}
+
+#save-creation-button:focus {
+  background-color: grey;
 }

@@ -47,7 +47,7 @@
 
 #saves-table thead tr th span {
   display: inline-block;
-  width: 50%; }
+  width: 33.3333336%; }
 #saves-table #saves {
   max-height: 185px;
   overflow-y: auto;
@@ -56,6 +56,8 @@
     display: table;
     width: 100%;
     table-layout: fixed; }
+    #saves-table #saves tr .label.label-info {
+      cursor: pointer; }
 
 @media all and (max-width: 500px) {
   #start-and-stop .col-lg-3.col-xs-6 {
@@ -88,5 +90,27 @@
 .btn-info:hover {
   background-color: lightgrey;
   border-color: lightgrey; }
+
+.small-box-footer {
+  cursor: pointer; }
+
+.small-box.bg-grey:hover {
+  color: black !important; }
+
+.form-control:focus {
+  border-color: dimgrey !important; }
+
+.box.box-info tbody {
+  min-width: 500px;
+  overflow-x: auto; }
+.box.box-info thead {
+  min-width: 500px;
+  overflow-x: auto; }
+
+#save-creation-button:active {
+  background-color: grey; }
+
+#save-creation-button:focus {
+  background-color: grey; }
 
 /*# sourceMappingURL=style.css.map */
