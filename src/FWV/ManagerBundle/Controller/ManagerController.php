@@ -4,6 +4,7 @@ namespace FWV\ManagerBundle\Controller;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +15,12 @@ class ManagerController extends Controller
     public function indexAction()
     {
         $manager = $this->container->get('fwv_manager.helper');
+        $form = $this->createFormBuilder()
+            ->add('tarball', FileType::class, array('required' => true))
+            ->getForm();
         return $this->render('FWVManagerBundle:Default:index.html.twig', array(
-            'files' => $manager->getSaves()
+            'files' => $manager->getSaves(),
+            'form' => $form->createView()
         ));
     }
 
@@ -38,7 +43,7 @@ class ManagerController extends Controller
                 if ($manager->isServerRunning()) {
                     return new JsonResponse(array(
                         'done' => false,
-                        'answer' => 'Le serveur est déjà démarré'
+                        'answer' => 'Server already started'
                     ));
                 }
                 $manager->startServer(null, $this->get('logger'));
@@ -66,7 +71,7 @@ class ManagerController extends Controller
             if (!$manager->isServerRunning()) {
                 return new JsonResponse(array(
                     'done' => false,
-                    'answer' => 'Le serveur n\'est pas démarré'
+                    'answer' => 'Server is not started'
                 ));
             }
             $manager->stopServer();
@@ -88,12 +93,6 @@ class ManagerController extends Controller
         }
 
         $manager = $this->container->get('fwv_manager.helper');
-        if (!$manager->isServerRunning()) {
-            return new JsonResponse(array(
-                'done' => false,
-                'answer' => 'Le serveur n\'est pas démarré'
-            ));
-        }
         try {
             $manager->restartServer($this->get('logger'));
         } catch (Exception $e) {
@@ -129,14 +128,14 @@ class ManagerController extends Controller
         if (!$saveName = $request->get('savename')) {
             return new JsonResponse(array(
                 'done' => false,
-                'answer' => 'Veuillez fournir un nom pour la sauvegarde'
+                'answer' => 'Please, give a name to your save'
             ));
         }
 
         if ($saveName != preg_replace("/[^A-Za-z0-9 ]/", '', $saveName)) {
             return new JsonResponse(array(
                 'done' => false,
-                'answer' => 'Seuls les caractères alphanumériques sont autorisés'
+                'answer' => 'Only alphanumeric characteres are allowed'
             ));
         }
 
@@ -173,5 +172,29 @@ class ManagerController extends Controller
             'done' => true,
             'answer' => $answer
         ));
+    }
+
+    public function uploadGameAction(Request $request)
+    {
+        if($request->getMethod() == 'POST') {
+            $form = $this->createFormBuilder()
+                ->add('tarball', FileType::class, array('required' => true))
+                ->getForm();
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $someNewFilename = 'factorio.tar.xz';
+
+                $form['tarball']->getData()->move('../var', $someNewFilename);
+
+                $this->container->get('fwv_manager.helper')->installGame();
+            }
+            else {
+                foreach ($form->getErrors() as $error) {
+                    $this->get('logger')->error($error);
+                }
+            }
+        }
+        return $this->redirect($this->generateUrl('fwv_manager_homepage'));
     }
 }

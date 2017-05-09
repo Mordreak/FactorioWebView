@@ -25,3 +25,7 @@ fwv_manager_create_game:
 fwv_manager_check_server:
     path:     /check-server
     defaults: { _controller: FWVManagerBundle:Manager:isServerOn }
+
+fwv_manager_upload_game:
+    path:     /upload
+    defaults: { _controller: FWVManagerBundle:Manager:uploadGame }

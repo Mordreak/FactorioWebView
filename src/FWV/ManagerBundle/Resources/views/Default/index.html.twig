@@ -24,7 +24,7 @@
                     <div class="small-box bg-green">
                         <div class="inner start">
                             <h3>Start</h3>
-                            <p>Lancer</p>
+                            <p>Launch</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-checkmark-circled"></i>
@@ -38,7 +38,7 @@
                     <div class="small-box bg-grey">
                         <div class="inner restart">
                             <h3>Restart</h3>
-                            <p>Redémarrer</p>
+                            <p>Reboot</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-refresh"></i>
@@ -52,7 +52,7 @@
                     <div class="small-box bg-red">
                         <div class="inner stop">
                             <h3>Stop</h3>
-                            <p>Eteindre</p>
+                            <p>Shutdown</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-close-circled"></i>
@@ -67,7 +67,7 @@
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 id="saves-title" class="box-title">Sauvegardes des parties <i class="ion ion-refresh" id="refresh-saves"></i></h3>
+                            <h3 id="saves-title" class="box-title">Game saves <i class="ion ion-refresh" id="refresh-saves"></i></h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
@@ -80,7 +80,7 @@
                                 <table class="table no-margin" id="saves-table">
                                     <thead>
                                     <tr>
-                                        <th><span>Nom</span><span>Dernière utilisation</span><span>Charger une sauvegarde</span></th>
+                                        <th><span>Name</span><span>Last usage</span><span>Load</span></th>
                                     </tr>
                                     </thead>
                                     <tbody id="saves">
@@ -88,7 +88,7 @@
                                         <tr>
                                             <td>{{  file['name'] }}</td>
                                             <td><span class="label label-success">{{ file['time'] }}</span></td>
-                                            <td><span class="label label-info" id="{{  file['name'] }}">Charger</span></td>
+                                            <td><span class="label label-info" id="{{  file['name'] }}">Load</span></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -96,11 +96,30 @@
                             </div><!-- /.table-responsive -->
                         </div><!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <input type="text" name="message" placeholder="MaSuperPartie ..." class="form-control" id="savename-input">
-                            <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Créer une nouvelle partie</a>
+                            <input type="text" name="message" placeholder="MyGreateGame ..." class="form-control" id="savename-input">
+                            <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Create a new game</a>
                         </div><!-- /.box-footer -->
                     </div><!-- /.box -->
                 </div><!-- /.row -->
+            </div>
+            <!-- quick email widget -->
+            <div class="box box-info">
+                <div class="box-header">
+                    <i class="fa fa-folder"></i>
+                    <h3 class="box-title">Install Factorio (Factorio-headless.tar.xz)</h3>
+                </div>
+                <div class="box-body" id="file-upload-div">
+                    {{ form_start(form, { 'action': path('fwv_manager_upload_game') }) }}
+                    <div class="form-group">
+                        {{ form_label(form.tarball) }}
+                        {{ form_errors(form.tarball) }}
+                        {{ form_widget(form.tarball, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-default" id="install-button">Send <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
