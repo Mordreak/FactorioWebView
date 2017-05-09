@@ -28,7 +28,7 @@ How to:
           try to solve the problem and run './installation.sh 3', it will skip the previous steps and avoid errors incoming from a
           reconfiguration of your MySQL server for example, which comes in the first step)
         - Access http://factorio-web-view.local/config.php and check for warnings or errors to solve.
-        - You are done! Access your web manager at: http//factorio-web-view.local/
+        - You are done! Access your web manager at: http://factorio-web-view.local/
  
 To let other people access your web application:
         - Run "php bin/console fos:user:create" in your terminal. (this will create new users able to log in)
