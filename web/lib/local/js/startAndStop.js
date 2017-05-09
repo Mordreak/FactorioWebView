@@ -30,7 +30,7 @@ $( function() {
                 var confirmation = true;
                 if (typeof saveName == 'string') {
                     var datas = {savename: saveName};
-                    confirmation = confirm("Attention, ceci va redémarrer le serveur !\nVoulez-vous vraiment continuer?");
+                    confirmation = confirm("Be carefull, this will shutdown the server !\nWould you like to continue?");
                 }
                 if (confirmation == true) {
                     var urlRequest = this.options.startUrl;
@@ -45,9 +45,9 @@ $( function() {
                         success: function (result) {
                             if (result['done'] == true) {
                                 if (typeof saveName == 'string') {
-                                    popupMe('Sauvegarde chargée avec succès');
+                                    popupMe('Save loaded successfully');
                                 } else
-                                    popupMe('Serveur démarré avec succès');
+                                    popupMe('Server started successfully');
                             } else {
                                 popupMe(result['answer']);
                             }
@@ -80,7 +80,7 @@ $( function() {
                     dataType: 'json',
                     success: function (result) {
                         if (result['done'] == true) {
-                            popupMe('Serveur arrêté avec succès');
+                            popupMe('Server stopped successfully');
                         } else {
                             popupMe(result['answer']);
                         }
@@ -112,7 +112,7 @@ $( function() {
                     dataType: 'json',
                     success: function (result) {
                         if (result['done'] == true) {
-                            popupMe('Serveur redémarré avec succès');
+                            popupMe('Server restarted successfully');
                         } else {
                             popupMe(result['answer']);
                         }
@@ -147,7 +147,7 @@ $( function() {
                             content += '<tr>\
                             <td>' + value['name'] + '</td>\
                             <td><span class="label label-success">' + value['time'] + '</span></td>\
-                            <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
+                            <td><span class="label label-info" id="' + value['name'] + '">Load</span></td>\
                         </tr>'
                         });
                         $('#saves').html(content);

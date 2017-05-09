@@ -19,35 +19,43 @@ $( function() {
         },
 
         create: function (event) {
+            var saveName = $('#savename-input').val();
+            if (saveName != '') {
             if (request == null) {
-                var confirmation = confirm("Attention, ceci va éteindre le serveur !\nVoulez-vous vraiment continuer?");
+                var confirmation = confirm("Be carefull, this will shutdown the server !\nWould you like to continue?");
                 if (confirmation == true) {
-                    var saveName = $('#savename-input').val();
-                    var urlRequest = this.options.createUrl;
-                    var current = this;
-                    request = $.ajax({
-                        url: urlRequest,
-                        data: {savename: saveName},
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            if (result['done'] == true) {
-                                popupMe('Partie créée avec succès');
-                            } else {
-                                popupMe(result['answer']);
+                        var urlRequest = this.options.createUrl;
+                        var current = this;
+                        $('#saves-title i').hide();
+                        $('#saves-title').css('background-image', 'url(\'/lib/local/img/load-tiny.gif\')');
+                        request = $.ajax({
+                            url: urlRequest,
+                            data: {savename: saveName},
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result['done'] == true) {
+                                    popupMe('Game successfully created');
+                                } else {
+                                    popupMe(result['answer']);
+                                }
+                            },
+
+                            error: function (result) {
+                                popupMe('An error as occured, please try again later');
+                            },
+
+                            complete: function (result) {
+                                $('#saves-title').css('background-image', 'none');
+                                $('#saves-title i').show();
+                                request = null;
+                                current._refresh();
                             }
-                        },
-
-                        error: function (result) {
-                            popupMe('An error as occured, please try again later');
-                        },
-
-                        complete: function (result) {
-                            request = null;
-                            current._refresh();
-                        }
-                    });
+                        });
+                    }
                 }
+            } else {
+                popupMe('Please, give a name to your game');
             }
         },
 
@@ -67,7 +75,7 @@ $( function() {
                             content += '<tr>\
                             <td>' + value['name'] + '</td>\
                             <td><span class="label label-success">' + value['time'] + '</span></td>\
-                            <td><span class="label label-info" id="' + value['name'] + '">Charger</span></td>\
+                            <td><span class="label label-info" id="' + value['name'] + '">Load</span></td>\
                         </tr>'
                         });
                         $('#saves').html(content);

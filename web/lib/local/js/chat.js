@@ -28,7 +28,7 @@ $(function () {
                     dataType: 'json',
                     success: function (result) {
                         if (result['done'] == true) {
-                            popupMe('Partie créée avec succès');
+                            popupMe('Game successfully created');
                         } else {
                             popupMe(result['answer']);
                         }
