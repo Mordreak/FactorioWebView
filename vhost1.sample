@@ -1,0 +1,4 @@
+<VirtualHost *:80>
+	ServerName factorio-web-view.local
+	ServerAlias factorio-web-view.local
+

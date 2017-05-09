@@ -1,0 +1,7 @@
+                Options Indexes FollowSymLinks MultiViews
+                DirectoryIndex app.php
+                AllowOverride All
+                Require all granted
+        </Directory>
+        
+</VirtualHost>
