@@ -15,6 +15,14 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Manager
 {
+    /**
+     * Starts the server
+     *
+     * @param null $saveName
+     * @param $logger
+     * @return string
+     * @throws \Exception
+     */
     public function startServer($saveName = null, $logger)
     {
         if (!$this->_isGameInstalled())
@@ -57,6 +65,12 @@ class Manager
         return $process->getOutput();
     }
 
+    /**
+     * Stops the server
+     *
+     * @return string
+     * @throws \Exception
+     */
     public function stopServer()
     {
         if (!$this->_isGameInstalled())
@@ -86,6 +100,11 @@ class Manager
         return $process->getOutput();
     }
 
+    /**
+     * Check wether the server is running or not
+     *
+     * @return bool|string
+     */
     public function isServerRunning()
     {
         if (!$this->_isGameInstalled())
@@ -105,6 +124,13 @@ class Manager
         return $process->getOutput();
     }
 
+    /**
+     * Force the server to stop !!CARE!! using this will
+     * cause the server not to save the game currently running
+     * before exiting
+     *
+     * @return string
+     */
     public function forceStop()
     {
         $process = new Process('pkill -9 factorio', null, null, null, 3, array());
@@ -118,6 +144,12 @@ class Manager
         return $process->getOutput();
     }
 
+    /**
+     * Check wether the given savename exists or not
+     *
+     * @param $saveName
+     * @return bool
+     */
     public function saveExists($saveName) {
         if (!$this->_isGameInstalled())
             throw new \InvalidArgumentException('The game is not installed yet');
@@ -132,6 +164,12 @@ class Manager
         return false;
     }
 
+    /**
+     * Restarts the server
+     *
+     * @param $logger
+     * @return string
+     */
     public function restartServer($logger)
     {
         if (!$this->_isGameInstalled())
@@ -140,6 +178,11 @@ class Manager
         return $this->startServer(null, $logger);
     }
 
+    /**
+     * Retrieves the saves
+     *
+     * @return array
+     */
     public function getSaves()
     {
         if (!$this->_isGameInstalled())
@@ -161,6 +204,11 @@ class Manager
         }
     }
 
+    /**
+     * Retrieves the last used save
+     *
+     * @return mixed|null
+     */
     public function getLastUsedSave()
     {
         if (!$this->_isGameInstalled())
@@ -172,6 +220,12 @@ class Manager
         return null;
     }
 
+    /**
+     * Creates a new game save
+     *
+     * @param $saveName
+     * @throws \Exception
+     */
     public function createGame($saveName)
     {
         if (!$this->_isGameInstalled())
@@ -204,6 +258,12 @@ class Manager
         }
     }
 
+    /**
+     * Check wether the factorio headless server is
+     * currently installed or not
+     *
+     * @return bool
+     */
     protected function _isGameInstalled()
     {
         try {
@@ -215,6 +275,9 @@ class Manager
         return true;
     }
 
+    /**
+     * Installs the factorio headless server
+     */
     public function installGame()
     {
         if ($this->_isGameInstalled()) {

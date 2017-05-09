@@ -12,6 +12,11 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ManagerController extends Controller
 {
+    /**
+     * Renders the dashboard page
+     *
+     * @return Response
+     */
     public function indexAction()
     {
         $manager = $this->container->get('fwv_manager.helper');
@@ -24,6 +29,12 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Starts the server
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function startServerAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -60,6 +71,12 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Stops the server
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function stopServerAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -86,6 +103,12 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Restarts the server
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function restartServerAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -106,6 +129,13 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * retrieves informations about the save files
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     *
+     */
     public function getSavesAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -119,6 +149,12 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Creates a new game/save
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function createGameAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -154,6 +190,12 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Check wether the server is on/off
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function isServerOnAction(Request $request)
     {
         if (!$request->isXMLHttpRequest()) {
@@ -174,6 +216,13 @@ class ManagerController extends Controller
         ));
     }
 
+    /**
+     * Handles the form which uploads the headless server package
+     * and install the server from this package.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function uploadGameAction(Request $request)
     {
         if($request->getMethod() == 'POST') {
