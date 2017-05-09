@@ -24,7 +24,7 @@ class Manager
         if (!$this->saveExists($saveName))
             throw new InvalidArgumentException('Le fichier de sauvegarde n\'existe pas.');
 
-        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > ./logs/' . $saveName . '.log &', '/factorio', null, null, 3, array());
+        $process = new Process('./bin/x64/factorio --start-server ' . $saveName . ' > ./logs/' . $saveName . '.log &', '../var/factorio', null, null, 3, array());
         try {
             $process->run();
         } catch (ProcessTimedOutException $e) {
@@ -109,7 +109,7 @@ class Manager
 
     public function saveExists($saveName) {
         $finder = new Finder();
-        $finder->files()->in('/factorio/saves');
+        $finder->files()->in('../var/factorio/saves');
 
         foreach ($finder as $file) {
             if ($file->getRelativePathname() === $saveName . '.zip')
@@ -128,7 +128,7 @@ class Manager
     {
         sleep(1);
         $finder = new Finder();
-        $finder->files()->in('/factorio/saves')->name('*.zip')->sortByAccessedTime();
+        $finder->files()->in('../var/factorio/saves')->name('*.zip')->sortByAccessedTime();
         $files = array();
         $i = 0;
         foreach ($finder as $file) {
@@ -156,14 +156,14 @@ class Manager
         if ($this->isServerRunning())
             $this->stopServer();
 
-        $creatingProcess = new Process('./bin/x64/factorio --create ' . $saveName . ' ./saves/' . $saveName . '.zip', '/factorio', null, null, 4, array());
+        $creatingProcess = new Process('./bin/x64/factorio --create ' . $saveName . ' ./saves/' . $saveName . '.zip', '../var/factorio', null, null, 4, array());
         $creatingProcess->run();
 
         if (!$creatingProcess->isSuccessful()) {
             throw new ProcessFailedException($creatingProcess);
         }
 
-        $movingProcess = new Process('mv ' . $saveName . '.zip ./saves/' . $saveName . '.zip', '/factorio', null, null, 1, array());
+        $movingProcess = new Process('mv ' . $saveName . '.zip ../saves/' . $saveName . '.zip', '../var/factorio', null, null, 1, array());
         $movingProcess->run();
 
         if (!$movingProcess->isSuccessful()) {
