@@ -11,7 +11,7 @@ INSTALLATION:
 
 Requirements:
         - A 'debian-like' (Ubuntu, Debian, Mint...) Operating System
-          (As long as this project is not tested for MAC OS X... (incoming))
+          (As long as this project is not tested for MAC OS X or WINDOWS... (incoming))
         - A MySQL server.
         - Be root.
         - Have PHP and Apache2 installed and working.
