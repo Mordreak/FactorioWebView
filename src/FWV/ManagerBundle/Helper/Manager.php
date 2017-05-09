@@ -255,5 +255,12 @@ class Manager
         if (!$backupSavesProcess->isSuccessful()) {
             throw new ProcessFailedException($backupSavesProcess);
         }
+
+        $rmTarballProcess = new Process('rm -f factorio.tar.xz', '../var', null, null, 1, array());
+        $rmTarballProcess->run();
+
+        if (!$rmTarballProcess->isSuccessful()) {
+            throw new ProcessFailedException($rmTarballProcess);
+        }
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Exception\MissingOptionsException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ManagerController extends Controller
 {
@@ -187,11 +187,15 @@ class ManagerController extends Controller
 
                 $form['tarball']->getData()->move('../var', $someNewFilename);
 
-                $this->container->get('fwv_manager.helper')->installGame();
+                try {
+                    $this->container->get('fwv_manager.helper')->installGame();
+                } catch (ProcessFailedException $e) {
+                    $this->get('logger')->error($e->getMessage());
+                }
             }
             else {
                 foreach ($form->getErrors() as $error) {
-                    $this->get('logger')->error($error);
+                    $this->get('logger')->error($error->getMessage());
                 }
             }
         }
