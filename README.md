@@ -20,9 +20,13 @@ Requirements:
           (your php.ini file is usually in /etc/php/apache2/php.ini)
 
 How to:
-        - Run the installation script as root called "installation.sh"
-          --> "sudo ./installation.sh" make sure you have enough rights to run it. (chmod +x installation.sh)
+        - Run the installation script AS ROOT called "installation.sh"
+          --> "sudo sh installation.sh" make sure you have enough rights to run it. (chmod +x installation.sh)
         - Let the installation script guide you trough the steps.
+        - !!IMPORTANT!! If the script fails for any reason, don't run it again, try to solve the errors, and run it with
+          the number of the step which failed as argument. (for example if the third step failed (03 SYMFONY & DOCTRINE CONFIGURATION)
+          try to solve the problem and run './installation.sh 3', it will skip the previous steps and avoid errors incoming from a
+          reconfiguration of your MySQL server for example, which comes in the first step)
         - Access http://factorio-web-view.local/config.php and check for warnings or errors to solve.
         - You are done! Access your web manager at: http//factorio-web-view.local/
  

@@ -2,16 +2,36 @@
 
 set -e
 
+re='^[0-9]+$'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 
+#PARSING PARAMETER
+##################
+
+if [ "$1" = "" ]; then
+    PARAM="1"
+else
+    if ! [[ $1 =~ $re ]] ; then
+        echo "Error: Argument '$1' is not a number" >&2; exit 1
+    fi
+    PARAM=$1
+fi
+
+#01 CONFIGURING MySQL:
+######################
+
+if [ "$PARAM" -le "1" ]; then
+
 echo -e "\n${PURPLE}01 CONFIGURING MySQL:"
-echo -e "===============================${NC}\n"
+echo -e "=====================${NC}\n"
 
 read -p "Enter your current MySQL root user: " dbUser
 read -s -p "Enter your current MySQL root password: " dbPasswd
+echo -e "\n"
 read -p "Enter a new Mysql username for this application (remember it for this script's third part): " dbNewUser
 read -s -p "Enter MySQL password for this application (remember it for this script's third part): " dbNewPasswd
+echo -e "\n"
 read -p "Enter a new name for your application database (remember it for this script's third part): " dbName
 
 if [ "$dbPasswd" = "" ]; then
@@ -22,18 +42,48 @@ fi
 
 $DBCALL -e "CREATE DATABASE IF NOT EXISTS $dbName;"
 $DBCALL -e "CREATE USER '$dbNewUser'@'localhost' IDENTIFIED BY '$dbNewPasswd';"
-$DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost;"
+$DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost';"
 $DBCALL -e "FLUSH PRIVILEGES;"
+
+else
+    echo -e "\n${PURPLE}IGNORING MySQL CONFIGURATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#02 INSTALLING DEPENDENCIES:
+############################
+
+if [ "$PARAM" -le "2" ]; then
 
 echo -e "\n${PURPLE}02 INSTALLING DEPENDENCIES:"
 echo -e "========================${NC}\n"
 
 php composer.phar install
 
+else
+    echo -e "\n${PURPLE}IGNORING DEPENDENCIES INSTALLATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#03 CONFIGURING SYMFONY & DOCTRINE:
+###################################
+
+if [ "$PARAM" -le "3" ]; then
+
 echo -e "\n${PURPLE}03 CONFIGURING SYMFONY & DOCTRINE:"
 echo -e "===============================${NC}\n"
 
 php bin/console doctrine:schema:update --force
+
+else
+    echo -e "\n${PURPLE}IGNORING SYMFONY & DOCTRINE CONFIGURATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#04 CONFIGURING APACHE:
+#######################
+
+if [ "$PARAM" -le "4" ]; then
 
 echo -e "\n${PURPLE}04 CONFIGURING APACHE:"
 echo -e "===================${NC}\n"
@@ -46,6 +96,16 @@ a2ensite factorio-web-view.local.conf
 /etc/init.d/apache2 restart
 echo "127.0.0.1		factorio-web-view.local" >> /etc/hosts
 
+else
+    echo -e "\n${PURPLE}IGNORING APACHE CONFIGURATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#05 CONFIGURING PERMISSIONS:
+############################
+
+if [ "$PARAM" -le "5" ]; then
+
 echo -e "\n${PURPLE}05 CONFIGURING PERMISSIONS:"
 echo -e "========================${NC}\n"
 
@@ -55,10 +115,28 @@ chown -R www-data:www-data $PWD
 echo "chmod -R 755 $PWD"
 chmod -R 755 $PWD
 
-echo -e "\n${PURPLE}05 CREATING NEW USER:"
+else
+    echo -e "\n${PURPLE}IGNORING PERMISSIONS CONFIGURATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#06 CREATING NEW USER:
+######################
+
+if [ "$PARAM" -le "6" ]; then
+
+echo -e "\n${PURPLE}06 CREATING NEW USER:"
 echo -e "========================${NC}\n"
 
 php bin/console fos:user:create
+
+else
+    echo -e "\n${PURPLE}IGNORING USER CREATION STEP"
+    echo -e "==================================${NC}\n"
+fi
+
+#DONE
+#####
 
 echo -e "\n${PURPLE}DONE"
 echo -e "====${NC}\n"
