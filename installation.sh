@@ -6,6 +6,13 @@ re='^[0-9]+$'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 
+#CHECK USER ROOT PRIVILEGES
+###########################
+
+if [ "$USER" != "root" ]; then
+    echo "You must run this script with the root privileges (sudo)" >&2; exit 1
+fi
+
 #PARSING PARAMETER
 ##################
 
