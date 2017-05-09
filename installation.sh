@@ -29,10 +29,10 @@ echo -e "=====================${NC}\n"
 read -p "Enter your current MySQL root user: " dbUser
 read -s -p "Enter your current MySQL root password: " dbPasswd
 echo -e "\n"
-read -p "Enter a new Mysql username for this application (remember it for this script's third part): " dbNewUser
-read -s -p "Enter MySQL password for this application (remember it for this script's third part): " dbNewPasswd
+read -p "Enter a new Mysql username for this application (remember it for this script's second part): " dbNewUser
+read -s -p "Enter MySQL password for this application (remember it for this script's second part): " dbNewPasswd
 echo -e "\n"
-read -p "Enter a new name for your application database (remember it for this script's third part): " dbName
+read -p "Enter a new name for your application database (remember it for this script's second part): " dbName
 
 if [ "$dbPasswd" = "" ]; then
     DBCALL="mysql -u$dbUser"
