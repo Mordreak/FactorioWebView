@@ -1,9 +1,9 @@
 {% extends "::base.html.twig" %}
 
+{% block dashboard_list_item %}<li class="active">{% endblock %}
+
 {% block body %}
-    <!-- Right side column. Contains the navbar and content of the page -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
                 Dashboard
@@ -14,13 +14,9 @@
                 <li class="active">Dashboard</li>
             </ol>
         </section>
-
-        <!-- Main content -->
         <section class="content">
-            <!-- Small boxes (Stat box) -->
             <div class="row" id="start-and-stop">
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner start">
                             <h3>Start</h3>
@@ -32,9 +28,8 @@
                         <a href="javascript:" class="small-box-footer" id="start">Go <i
                                     class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div><!-- ./col -->
+                </div>
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-grey">
                         <div class="inner restart">
                             <h3>Restart</h3>
@@ -46,9 +41,8 @@
                         <a href="javascript:" class="small-box-footer" id="restart">Go <i
                                     class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div><!-- ./col -->
+                </div>
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-red">
                         <div class="inner stop">
                             <h3>Stop</h3>
@@ -60,11 +54,10 @@
                         <a href="javascript:" class="small-box-footer" id="stop">Go <i
                                     class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div><!-- ./col -->
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 id="saves-title" class="box-title">Game saves <i class="ion ion-refresh" id="refresh-saves"></i></h3>
@@ -74,7 +67,7 @@
                                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
                                 </button>
                             </div>
-                        </div><!-- /.box-header -->
+                        </div>
                         <div class="box-body">
                             <div class="table-responsive">
                                 <table class="table no-margin" id="saves-table">
@@ -93,16 +86,15 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                            </div><!-- /.table-responsive -->
-                        </div><!-- /.box-body -->
+                            </div>
+                        </div>
                         <div class="box-footer clearfix">
                             <input type="text" name="message" placeholder="MyGreateGame ..." class="form-control" id="savename-input">
                             <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Create a new game</a>
-                        </div><!-- /.box-footer -->
-                    </div><!-- /.box -->
-                </div><!-- /.row -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- quick email widget -->
             <div class="box box-info">
                 <div class="box-header">
                     <i class="fa fa-folder"></i>
@@ -121,8 +113,8 @@
                     {{ form_end(form) }}
                 </div>
             </div>
-        </section><!-- /.content -->
-    </div><!-- /.content-wrapper -->
+        </section>
+    </div>
 {% endblock %}
 
 {% block javascripts %}

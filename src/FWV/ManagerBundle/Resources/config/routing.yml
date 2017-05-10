@@ -1,6 +1,6 @@
 fwv_manager_homepage:
     path:     /
-    defaults: { _controller: FWVManagerBundle:Manager:index }
+    defaults: { _controller: FWVManagerBundle:Manager:dashboard }
 
 fwv_manager_start_server:
     path:     /start-server
@@ -29,3 +29,11 @@ fwv_manager_check_server:
 fwv_manager_upload_game:
     path:     /upload
     defaults: { _controller: FWVManagerBundle:Manager:uploadGame }
+
+fwv_manager_manage:
+    path:     /manage
+    defaults: { _controller: FWVManagerBundle:Manager:manage }
+
+fwv_manager_logs:
+    path:     /logs
+    defaults: { _controller: FWVManagerBundle:Manager:getLogs }

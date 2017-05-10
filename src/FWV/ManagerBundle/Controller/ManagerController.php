@@ -17,13 +17,13 @@ class ManagerController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function dashboardAction()
     {
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         $form = $this->createFormBuilder()
             ->add('tarball', FileType::class, array('required' => true))
             ->getForm();
-        return $this->render('FWVManagerBundle:Default:index.html.twig', array(
+        return $this->render('FWVManagerBundle:Manager:dashboard.html.twig', array(
             'files' => $manager->getSaves(),
             'form' => $form->createView()
         ));
@@ -41,7 +41,7 @@ class ManagerController extends Controller
             return new Response('This is not ajax!', 400);
         }
 
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
 
         try {
 
@@ -83,7 +83,7 @@ class ManagerController extends Controller
             return new Response('This is not ajax!', 400);
         }
 
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         try {
             if (!$manager->isServerRunning()) {
                 return new JsonResponse(array(
@@ -115,7 +115,7 @@ class ManagerController extends Controller
             return new Response('This is not ajax!', 400);
         }
 
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         try {
             $manager->restartServer($this->get('logger'));
         } catch (Exception $e) {
@@ -142,7 +142,7 @@ class ManagerController extends Controller
             return new Response('This is not ajax!', 400);
         }
 
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         return new JsonResponse(array(
             'done' => true,
             'saves' => $manager->getSaves()
@@ -175,7 +175,7 @@ class ManagerController extends Controller
             ));
         }
 
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         try {
             $manager->createGame($saveName);
         } catch (Exception $e) {
@@ -201,7 +201,7 @@ class ManagerController extends Controller
         if (!$request->isXMLHttpRequest()) {
             return new Response('This is not ajax!', 400);
         }
-        $manager = $this->container->get('fwv_manager.helper');
+        $manager = $this->container->get('fwv_manager.helper_manager');
         try {
             $answer = $manager->isServerRunning() ? true : false;
         } catch (Exception $e) {
@@ -237,7 +237,7 @@ class ManagerController extends Controller
                 $form['tarball']->getData()->move('../var', $someNewFilename);
 
                 try {
-                    $this->container->get('fwv_manager.helper')->installGame();
+                    $this->container->get('fwv_manager.helper_manager')->installGame();
                 } catch (ProcessFailedException $e) {
                     $this->get('logger')->error($e->getMessage());
                 }
@@ -249,5 +249,22 @@ class ManagerController extends Controller
             }
         }
         return $this->redirect($this->generateUrl('fwv_manager_homepage'));
+    }
+
+    /**
+     * Renders the manage page
+     *
+     * @return Response
+     */
+    public function manageAction()
+    {
+        return $this->render('FWVManagerBundle:Manager:manage.html.twig');
+    }
+
+    public function getLogsAction()
+    {
+        $parser = $this->container->get('fwv_manager.helper_parser');
+        $logs = $parser->parseLog();
+        return new JsonResponse($logs);
     }
 }
