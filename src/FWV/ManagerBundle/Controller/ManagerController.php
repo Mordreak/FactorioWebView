@@ -232,12 +232,12 @@ class ManagerController extends Controller
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $someNewFilename = 'factorio.tar.xz';
+                $tarballName = $form['tarball']->getData()->getClientOriginalName();
 
-                $form['tarball']->getData()->move('../var', $someNewFilename);
+                $form['tarball']->getData()->move('../var', $tarballName);
 
                 try {
-                    $this->container->get('fwv_manager.helper_manager')->installGame();
+                    $this->container->get('fwv_manager.helper_manager')->installGame($tarballName);
                 } catch (ProcessFailedException $e) {
                     $this->get('logger')->error($e->getMessage());
                 }
@@ -263,8 +263,17 @@ class ManagerController extends Controller
 
     public function getLogsAction()
     {
-        $parser = $this->container->get('fwv_manager.helper_parser');
-        $logs = $parser->parseLog();
-        return new JsonResponse($logs);
+        try {
+            $parser = $this->container->get('fwv_manager.helper_parser');
+            $logs = $parser->parseLog();
+            return new JsonResponse(array(
+                'done' => true,
+                'logs' => $logs
+            ));
+        } catch (Exception $e) {
+            return new JsonResponse(array(
+                'done' => false
+            ));
+        }
     }
 }

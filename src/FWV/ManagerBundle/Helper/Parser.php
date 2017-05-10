@@ -9,6 +9,7 @@
 namespace FWV\ManagerBundle\Helper;
 
 
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\Finder\Finder;
 
 class Parser
@@ -21,13 +22,32 @@ class Parser
         foreach ($files as $file)
             $logFile = $file;
         $lines = explode("\n", $logFile->getContents());
+        $key = 0;
         foreach ($lines as $line) {
-            $line = trim($line);
-            if (strpos($line, 'Operating system:') !== false)
-                $logs['system'] = trim(substr($line, strpos($line, 'Operating system:') + strlen('Operating system:')));
-            if (strpos($line, 'System info:') !== false)
-                $logs['config'] = trim(substr($line, strpos($line, 'System info:') + strlen('System info:')));
+            try {
+                $line = trim($line);
+                $time = $this->_getLineTime($line);
+                if (!empty($time)) {
+                    $logs[$key]['time'] = $time;
+                    $logs[$key]['info'] = $this->_getLineInfo($line, $time);
+                    $key++;
+                } else {
+                    continue;
+                }
+            } catch (ContextErrorException $e) {
+                continue;
+            }
         }
         return $logs;
+    }
+
+    protected function _getLineTime($line)
+    {
+        return explode(' ', $line)[0];
+    }
+
+    protected function _getLineInfo($line, $time)
+    {
+        return substr(strstr($line, $time), strlen($time));
     }
 }

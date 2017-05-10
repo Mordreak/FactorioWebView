@@ -47,8 +47,10 @@
 
 #saves-table thead tr th span {
   display: inline-block;
-  width: 33.3333336%; }
+  width: 33.3333336%;
+  min-width: 150px; }
 #saves-table #saves {
+  min-width: 0;
   max-height: 185px;
   overflow-y: auto;
   display: block; }
@@ -58,6 +60,8 @@
     table-layout: fixed; }
     #saves-table #saves tr .label.label-info {
       cursor: pointer; }
+    #saves-table #saves tr td {
+      min-width: 150px; }
 
 @media all and (max-width: 500px) {
   #start-and-stop .col-lg-3.col-xs-6 {
@@ -101,10 +105,8 @@
   border-color: dimgrey !important; }
 
 .box.box-info tbody {
-  min-width: 500px;
   overflow-x: auto; }
 .box.box-info thead {
-  min-width: 500px;
   overflow-x: auto; }
 
 #save-creation-button:active {
@@ -118,5 +120,28 @@
 
 #manage-first-row {
   margin-top: 10px; }
+
+#log-table thead tr th span {
+  display: inline-block;
+  width: 100%;
+  padding-left: 90px; }
+#log-table thead tr th span:first-child {
+  width: 90px;
+  margin-right: -90px;
+  padding-left: 0; }
+#log-table #logs {
+  min-width: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  display: block; }
+  #log-table #logs tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; }
+    #log-table #logs tr td:first-child {
+      width: 90px; }
+
+.table-responsive {
+  overflow-x: hidden; }
 
 /*# sourceMappingURL=style.css.map */

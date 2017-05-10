@@ -61,11 +61,13 @@
         span {
           display: inline-block;
           width: 33.3333336%;
+          min-width: 150px;
         }
       }
     }
   }
   #saves {
+    min-width: 0;
     max-height: 185px;
     overflow-y: auto;
     display: block;
@@ -75,6 +77,9 @@
       table-layout: fixed;
       .label.label-info {
         cursor: pointer;
+      }
+      td {
+        min-width: 150px;
       }
     }
   }
@@ -138,11 +143,9 @@
 
 .box.box-info {
   tbody {
-    min-width: 500px;
     overflow-x: auto;
   }
   thead {
-    min-width: 500px;
     overflow-x: auto;
   }
 }
@@ -161,4 +164,41 @@
 
 #manage-first-row {
   margin-top: 10px;
+}
+
+#log-table {
+  thead {
+    tr {
+      th {
+        span {
+          display: inline-block;
+          width: 100%;
+          padding-left: 90px;
+        }
+        span:first-child {
+          width: 90px;
+          margin-right: -90px;
+          padding-left: 0;
+        }
+      }
+    }
+  }
+  #logs {
+    min-width: 0;
+    max-height: 320px;
+    overflow-y: auto;
+    display: block;
+    tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      td:first-child {
+        width: 90px;
+      }
+    }
+  }
+}
+
+.table-responsive {
+  overflow-x: hidden;
 }
