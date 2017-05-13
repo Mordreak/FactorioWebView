@@ -1,3 +1,5 @@
 services:
-    fwv_manager.helper:
+    fwv_manager.helper_manager:
         class: FWV\ManagerBundle\Helper\Manager
+    fwv_manager.helper_parser:
+        class: FWV\ManagerBundle\Helper\Parser

@@ -278,7 +278,7 @@ class Manager
     /**
      * Installs the factorio headless server
      */
-    public function installGame()
+    public function installGame($tarballName)
     {
         if ($this->_isGameInstalled()) {
             if ($this->isServerRunning())
@@ -304,6 +304,7 @@ class Manager
             $tarOptions = 'xzf';
         else
             throw new \InvalidArgumentException('Unrecognized tarball compression type');
+
         $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 5, array());
         $untarProcess->run();
         if (!$untarProcess->isSuccessful()) {
@@ -324,7 +325,7 @@ class Manager
             throw new ProcessFailedException($backupSavesProcess);
         }
 
-        $rmTarballProcess = new Process('rm -f factorio.tar.xz', '../var', null, null, 1, array());
+        $rmTarballProcess = new Process('rm -f ' . $tarballName, '../var', null, null, 1, array());
         $rmTarballProcess->run();
 
         if (!$rmTarballProcess->isSuccessful()) {

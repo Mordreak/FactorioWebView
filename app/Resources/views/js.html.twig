@@ -35,3 +35,22 @@
 
 <!-- POPUP SCRIPT -->
 <script src="{{ asset('lib/local/js/popup-me.js') }}"></script>
+<!-- GLOBAL SCRIPT -->
+<script src="{{ asset('lib/local/js/global.js') }}"></script>
+
+<script src="{{ asset('lib/local/js/serverIsLive.js') }}"></script>
+<script>
+    var checkRequest = null;
+    var request = null;
+    $(document).ready(function () {
+        window.onbeforeunload = function (e) {
+            if (checkRequest != null || request != null) {
+                return "Your are currently running a task, Are you sure you want to exit this page? (It may cause critical issues on your factorio server)";
+            }
+        };
+        isServerLive('{{ path('fwv_manager_check_server') }}');
+        window.setInterval(function () {
+            isServerLive('{{ path('fwv_manager_check_server') }}');
+        }, 3000);
+    });
+</script>
