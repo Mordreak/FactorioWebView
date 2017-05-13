@@ -16,8 +16,12 @@ fi
 #PARSING PARAMETER
 ##################
 
+if [ ! -f installation.dat ]; then
+    echo "0" > installation.dat
+fi
+
 if [ "$1" = "" ]; then
-    PARAM="1"
+    PARAM=$(head -c 1 installation.dat)
 else
     if ! [[ $1 =~ $re ]] ; then
         echo "Error: Argument '$1' is not a number" >&2; exit 1
@@ -52,9 +56,13 @@ $DBCALL -e "CREATE USER '$dbNewUser'@'localhost' IDENTIFIED BY '$dbNewPasswd';"
 $DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost';"
 $DBCALL -e "FLUSH PRIVILEGES;"
 
+echo "1" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING MySQL CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "1" > installation.dat
 fi
 
 #02 INSTALLING DEPENDENCIES:
@@ -67,9 +75,13 @@ echo -e "========================${NC}\n"
 
 php composer.phar install
 
+echo "2" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING DEPENDENCIES INSTALLATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "2" > installation.dat
 fi
 
 #03 CONFIGURING SYMFONY & DOCTRINE:
@@ -82,9 +94,13 @@ echo -e "===============================${NC}\n"
 
 php bin/console doctrine:schema:update --force
 
+echo "3" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING SYMFONY & DOCTRINE CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "3" > installation.dat
 fi
 
 #04 CONFIGURING APACHE:
@@ -103,9 +119,13 @@ a2ensite factorio-web-view.local.conf
 /etc/init.d/apache2 restart
 echo "127.0.0.1		factorio-web-view.local" >> /etc/hosts
 
+echo "4" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING APACHE CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "4" > installation.dat
 fi
 
 #05 CONFIGURING PERMISSIONS:
@@ -122,9 +142,13 @@ chown -R www-data:www-data $PWD
 echo "chmod -R 755 $PWD"
 chmod -R 755 $PWD
 
+echo "5" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING PERMISSIONS CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "5" > installation.dat
 fi
 
 #06 CREATING NEW USER:
