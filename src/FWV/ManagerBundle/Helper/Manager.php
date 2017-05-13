@@ -298,9 +298,14 @@ class Manager
                 throw new ProcessFailedException($removeGameProcess);
             }
         }
-        $untarProcess = new Process('tar Jxf factorio.tar.xz', '../var', null, null, 5, array());
+        if (strpos($tarballName, '.tar.xz') !== false)
+            $tarOptions = 'Jxf';
+        else if (strpos($tarballName, '.tar.gz') !== false)
+            $tarOptions = 'xzf';
+        else
+            throw new \InvalidArgumentException('Unrecognized tarball compression type');
+        $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 5, array());
         $untarProcess->run();
-
         if (!$untarProcess->isSuccessful()) {
             throw new ProcessFailedException($untarProcess);
         }
