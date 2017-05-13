@@ -16,8 +16,12 @@ fi
 #PARSING PARAMETER
 ##################
 
+if [ ! -f installation.dat ]; then
+    echo "1" > installation.dat
+fi
+
 if [ "$1" = "" ]; then
-    PARAM="1"
+    PARAM=$(head -c 1 installation.dat)
 else
     if ! [[ $1 =~ $re ]] ; then
         echo "Error: Argument '$1' is not a number" >&2; exit 1
@@ -36,10 +40,10 @@ echo -e "=====================${NC}\n"
 read -p "Enter your current MySQL root user: " dbUser
 read -s -p "Enter your current MySQL root password: " dbPasswd
 echo -e "\n"
-read -p "Enter a new Mysql username for this application (remember it for this script's second part): " dbNewUser
-read -s -p "Enter MySQL password for this application (remember it for this script's second part): " dbNewPasswd
+read -p "Enter a new Mysql username for this application: " dbNewUser
+read -s -p "Enter MySQL password for this application: " dbNewPasswd
 echo -e "\n"
-read -p "Enter a new name for your application database (remember it for this script's second part): " dbName
+read -p "Enter a new name for your application database: " dbName
 
 if [ "$dbPasswd" = "" ]; then
     DBCALL="mysql -u$dbUser"
@@ -52,9 +56,28 @@ $DBCALL -e "CREATE USER '$dbNewUser'@'localhost' IDENTIFIED BY '$dbNewPasswd';"
 $DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost';"
 $DBCALL -e "FLUSH PRIVILEGES;"
 
+SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+echo "# This file is auto-generated during the composer install" > app/config/parameters.yml
+echo "parameters:" >> app/config/parameters.yml
+echo "    database_host: 127.0.0.1" >> app/config/parameters.yml
+echo "    database_port: null" >> app/config/parameters.yml
+echo "    database_name: $dbName" >> app/config/parameters.yml
+echo "    database_user: $dbNewUser" >> app/config/parameters.yml
+echo "    database_password: $dbNewPasswd" >> app/config/parameters.yml
+echo "    mailer_transport: smtp" >> app/config/parameters.yml
+echo "    mailer_host: 127.0.0.1" >> app/config/parameters.yml
+echo "    mailer_user: sample@sample.com"  >> app/config/parameters.yml
+echo "    mailer_password: sample" >> app/config/parameters.yml
+echo "    secret: $SECRET" >> app/config/parameters.yml
+
+echo "2" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING MySQL CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "2" > installation.dat
 fi
 
 #02 INSTALLING DEPENDENCIES:
@@ -65,11 +88,15 @@ if [ "$PARAM" -le "2" ]; then
 echo -e "\n${PURPLE}02 INSTALLING DEPENDENCIES:"
 echo -e "========================${NC}\n"
 
-php composer.phar install
+php composer.phar install < config.tmp
+
+echo "3" > installation.dat
 
 else
     echo -e "\n${PURPLE}IGNORING DEPENDENCIES INSTALLATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "3" > installation.dat
 fi
 
 #03 CONFIGURING SYMFONY & DOCTRINE:
@@ -82,9 +109,13 @@ echo -e "===============================${NC}\n"
 
 php bin/console doctrine:schema:update --force
 
+echo "4" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING SYMFONY & DOCTRINE CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "4" > installation.dat
 fi
 
 #04 CONFIGURING APACHE:
@@ -103,9 +134,13 @@ a2ensite factorio-web-view.local.conf
 /etc/init.d/apache2 restart
 echo "127.0.0.1		factorio-web-view.local" >> /etc/hosts
 
+echo "5" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING APACHE CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "5" > installation.dat
 fi
 
 #05 CONFIGURING PERMISSIONS:
@@ -122,9 +157,13 @@ chown -R www-data:www-data $PWD
 echo "chmod -R 755 $PWD"
 chmod -R 755 $PWD
 
+echo "6" > installation.dat
+
 else
     echo -e "\n${PURPLE}IGNORING PERMISSIONS CONFIGURATION STEP"
     echo -e "==================================${NC}\n"
+
+    echo "6" > installation.dat
 fi
 
 #06 CREATING NEW USER:
