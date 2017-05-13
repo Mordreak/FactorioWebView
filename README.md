@@ -9,7 +9,7 @@ It allows you to install the server, start & stop it, create and load saves... A
 
 _Requirements:_
 * A 'debian-like' (Ubuntu, Debian, Mint...) Operating System
-(As long as this project is not tested for MAC OS X or WINDOWS... (incoming))
+(As long as this project is not tested/ready for MAC OS X or WINDOWS... (incoming))
 * A MySQL server.
 * Be root.
 * Have PHP and Apache2 installed and working.

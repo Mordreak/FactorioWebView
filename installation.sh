@@ -56,6 +56,8 @@ $DBCALL -e "CREATE USER '$dbNewUser'@'localhost' IDENTIFIED BY '$dbNewPasswd';"
 $DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost';"
 $DBCALL -e "FLUSH PRIVILEGES;"
 
+SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
 echo "# This file is auto-generated during the composer install" > app/config/parameters.yml
 echo "parameters:" >> app/config/parameters.yml
 echo "    database_host: 127.0.0.1" >> app/config/parameters.yml
@@ -67,7 +69,7 @@ echo "    mailer_transport: smtp" >> app/config/parameters.yml
 echo "    mailer_host: 127.0.0.1" >> app/config/parameters.yml
 echo "    mailer_user: sample@sample.com"  >> app/config/parameters.yml
 echo "    mailer_password: sample" >> app/config/parameters.yml
-echo "    secret: ThisTokenIsNotSoSecretChangeIt" >> app/config/parameters.yml
+echo "    secret: $SECRET" >> app/config/parameters.yml
 
 echo "2" > installation.dat
 
