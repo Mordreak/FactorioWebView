@@ -88,6 +88,9 @@ if [ "$PARAM" -le "2" ]; then
 echo -e "\n${PURPLE}02 INSTALLING DEPENDENCIES:"
 echo -e "========================${NC}\n"
 
+apt-get install php-intl
+apt-get install php-mysql
+apt-get install php-xml
 php composer.phar install
 
 echo "3" > installation.dat
@@ -126,6 +129,7 @@ if [ "$PARAM" -le "4" ]; then
 echo -e "\n${PURPLE}04 CONFIGURING APACHE:"
 echo -e "===================${NC}\n"
 
+a2enmod rewrite
 cat vhost1.sample > /etc/apache2/sites-available/factorio-web-view.local.conf
 echo "	DocumentRoot $PWD/web" >> /etc/apache2/sites-available/factorio-web-view.local.conf
 echo "	<Directory $PWD/web>" >> /etc/apache2/sites-available/factorio-web-view.local.conf
