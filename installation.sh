@@ -40,10 +40,10 @@ echo -e "=====================${NC}\n"
 read -p "Enter your current MySQL root user: " dbUser
 read -s -p "Enter your current MySQL root password: " dbPasswd
 echo -e "\n"
-read -p "Enter a new Mysql username for this application (remember it for this script's second part): " dbNewUser
-read -s -p "Enter MySQL password for this application (remember it for this script's second part): " dbNewPasswd
+read -p "Enter a new Mysql username for this application: " dbNewUser
+read -s -p "Enter MySQL password for this application: " dbNewPasswd
 echo -e "\n"
-read -p "Enter a new name for your application database (remember it for this script's second part): " dbName
+read -p "Enter a new name for your application database: " dbName
 
 if [ "$dbPasswd" = "" ]; then
     DBCALL="mysql -u$dbUser"
@@ -55,6 +55,19 @@ $DBCALL -e "CREATE DATABASE IF NOT EXISTS $dbName;"
 $DBCALL -e "CREATE USER '$dbNewUser'@'localhost' IDENTIFIED BY '$dbNewPasswd';"
 $DBCALL -e "GRANT ALL PRIVILEGES ON $dbName . * TO '$dbNewUser'@'localhost';"
 $DBCALL -e "FLUSH PRIVILEGES;"
+
+echo "# This file is auto-generated during the composer install" > app/config/parameters.yml
+echo "parameters:" >> app/config/parameters.yml
+echo "    database_host: 127.0.0.1" >> app/config/parameters.yml
+echo "    database_port: null" >> app/config/parameters.yml
+echo "    database_name: $dbName" >> app/config/parameters.yml
+echo "    database_user: $dbNewUser" >> app/config/parameters.yml
+echo "    database_password: $dbNewPasswd" >> app/config/parameters.yml
+echo "    mailer_transport: smtp" >> app/config/parameters.yml
+echo "    mailer_host: 127.0.0.1" >> app/config/parameters.yml
+echo "    mailer_user: sample@sample.com"  >> app/config/parameters.yml
+echo "    mailer_password: sample" >> app/config/parameters.yml
+echo "    secret: ThisTokenIsNotSoSecretChangeIt" >> app/config/parameters.yml
 
 echo "2" > installation.dat
 
@@ -73,7 +86,7 @@ if [ "$PARAM" -le "2" ]; then
 echo -e "\n${PURPLE}02 INSTALLING DEPENDENCIES:"
 echo -e "========================${NC}\n"
 
-php composer.phar install
+php composer.phar install < config.tmp
 
 echo "3" > installation.dat
 
