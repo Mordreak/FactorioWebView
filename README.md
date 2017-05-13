@@ -30,6 +30,6 @@ the installation failed, and won't try to run again previous configurations.
 _To let other people access your web application:_
 * Once the installation.sh script end successfully you can run it again to create new users for your friends
 * Edit the VirtualHost in /etc/apache2/site-available/factorio-web-view.local.conf
-to make it run with an accessible host-name. (Be root to edit) (exemple: https://factorio.wittmann.ovh/)
+to make it run with an accessible host-name. (Be root to edit) (example: https://factorio.wittmann.ovh/)
 * Restart Apache: "sudo /etc/init.d/apache2 restart"
 * Your server is running on port 34197 by default, once installed! (updates are coming soon to let you change it)
