@@ -88,7 +88,7 @@ if [ "$PARAM" -le "2" ]; then
 echo -e "\n${PURPLE}02 INSTALLING DEPENDENCIES:"
 echo -e "========================${NC}\n"
 
-php composer.phar install < config.tmp
+php composer.phar install
 
 echo "3" > installation.dat
 
