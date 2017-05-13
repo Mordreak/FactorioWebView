@@ -225,28 +225,32 @@ class ManagerController extends Controller
      */
     public function uploadGameAction(Request $request)
     {
-        if($request->getMethod() == 'POST') {
-            $form = $this->createFormBuilder()
-                ->add('tarball', FileType::class, array('required' => true))
-                ->getForm();
-            $form->handleRequest($request);
+        try {
+            if($request->getMethod() == 'POST') {
+                $form = $this->createFormBuilder()
+                    ->add('tarball', FileType::class, array('required' => true))
+                    ->getForm();
+                $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $someNewFilename = 'factorio.tar.xz';
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $someNewFilename = 'factorio.tar.xz';
 
-                $form['tarball']->getData()->move('../var', $someNewFilename);
+                    $form['tarball']->getData()->move('../var', $someNewFilename);
 
-                try {
-                    $this->container->get('fwv_manager.helper')->installGame();
-                } catch (ProcessFailedException $e) {
-                    $this->get('logger')->error($e->getMessage());
+                    try {
+                        $this->container->get('fwv_manager.helper')->installGame();
+                    } catch (ProcessFailedException $e) {
+                        $this->get('logger')->error($e->getMessage());
+                    }
+                }
+                else {
+                    foreach ($form->getErrors() as $error) {
+                        $this->get('logger')->error($error->getMessage());
+                    }
                 }
             }
-            else {
-                foreach ($form->getErrors() as $error) {
-                    $this->get('logger')->error($error->getMessage());
-                }
-            }
+        } catch (Exception $e) {
+            $this->get('logger')->error($e->getMessage());
         }
         return $this->redirect($this->generateUrl('fwv_manager_homepage'));
     }
