@@ -19,7 +19,7 @@ _Requirements:_
 
 _How to:_
 * Run the installation script AS ROOT called "installation.sh"
---> "sudo sh installation.sh" make sure you have enough rights to run it. (chmod +x installation.sh)
+--> "sudo bash installation.sh" make sure you have enough rights to run it. (chmod +x installation.sh)
 * Let the installation script guide you trough the steps.
 * If the script fails for any reason, try to solve the errors, and run it again, the script knows at which step
 the installation failed, and won't try to run again previous configurations.
