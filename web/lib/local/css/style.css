@@ -131,7 +131,7 @@
   padding-left: 0; }
 #log-table #logs {
   min-width: 0;
-  max-height: 320px;
+  max-height: 600px;
   overflow-y: auto;
   display: block; }
   #log-table #logs tr {
@@ -141,7 +141,44 @@
     #log-table #logs tr td:first-child {
       width: 90px; }
 
+#mod-table thead tr th span {
+  display: inline-block;
+  width: 90px;
+  padding: 0 8px 0 8px; }
+#mod-table thead tr th span:first-child {
+  width: 100%;
+  margin-right: -180px;
+  padding: 0; }
+#mod-table #mods {
+  min-width: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  display: block; }
+  #mod-table #mods tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; }
+    #mod-table #mods tr td:first-child {
+      width: 100%;
+      margin-right: -180px;
+      box-sizing: content-box;
+      padding-left: 8px; }
+    #mod-table #mods tr td {
+      width: 90px;
+      padding-left: 0; }
+
 .table-responsive {
   overflow-x: hidden; }
+
+.mods-wrapper {
+  overflow-x: auto; }
+  .mods-wrapper .table-responsive {
+    min-width: 400px; }
+
+.label.label-info {
+  cursor: pointer; }
+
+.label.label-danger {
+  cursor: pointer; }
 
 /*# sourceMappingURL=style.css.map */
