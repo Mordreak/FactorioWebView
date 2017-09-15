@@ -307,7 +307,6 @@ class Manager
 
         $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 5, array());
         $untarProcess->run();
-
         if (!$untarProcess->isSuccessful()) {
             throw new ProcessFailedException($untarProcess);
         }
