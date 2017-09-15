@@ -53,3 +53,7 @@ fwv_manager_log_page:
 fwv_manager_toggle_mod:
     path:     /activateMod
     defaults: { _controller: FWVManagerBundle:Manager:toggleMod }
+
+fwv_manager_upload_save:
+    path:     /uploadSave
+    defaults: { _controller: FWVManagerBundle:Manager:uploadSave }

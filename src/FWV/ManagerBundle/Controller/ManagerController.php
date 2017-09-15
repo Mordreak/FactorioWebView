@@ -393,4 +393,47 @@ class ManagerController extends Controller
             ));
         }
     }
+
+    /**
+     * Handles the form which uploads a custom savefile.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function uploadSaveAction(Request $request)
+    {
+        try {
+            if (!$request->isXMLHttpRequest()) {
+                return new Response('This is not ajax!', 400);
+            }
+            if ($request->getMethod() == 'POST') {
+
+                $file = $request->files->get('upload-save');
+
+                if ($file) {
+                    $saveFileName = $file->getClientOriginalName();
+
+                    $file->move('../var', $saveFileName);
+
+                    try {
+                        $this->container->get('fwv_manager.helper_manager')->installSave($saveFileName);
+                    } catch (ProcessFailedException $e) {
+                        $this->get('logger')->error($e->getMessage());
+                    }
+                }
+                else {
+                    $this->get('logger')->error('File was missing from upload');
+                }
+            }
+        } catch (Exception $e) {
+            $this->get('logger')->error($e->getMessage());
+            return new JsonResponse(array(
+                'done' => false,
+                'reason' => $e->getMessage()
+            ));
+        }
+        return new JsonResponse(array(
+            'done' => true
+        ));
+    }
 }

@@ -305,7 +305,7 @@ class Manager
         else
             throw new \InvalidArgumentException('Unrecognized tarball compression type');
 
-        $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 5, array());
+        $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 10, array());
         $untarProcess->run();
         if (!$untarProcess->isSuccessful()) {
             throw new ProcessFailedException($untarProcess);
@@ -318,7 +318,7 @@ class Manager
             throw new ProcessFailedException($mkdirProcess);
         }
 
-        $backupSavesProcess = new Process('mv -f saves factorio/', '../var', null, null, 1, array());
+        $backupSavesProcess = new Process('mv -f saves/* factorio/saves/', '../var', null, null, 1, array());
         $backupSavesProcess->run();
 
         if (!$backupSavesProcess->isSuccessful()) {
@@ -403,7 +403,8 @@ class Manager
      * @param $saveName
      * @return bool
      */
-    protected function _isModActivated($modName) {
+    protected function _isModActivated($modName)
+    {
         $finder = new Finder();
         $finder->files()->in('../var/factorio/mods');
 
@@ -412,5 +413,27 @@ class Manager
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Installs a new savefile
+     *
+     * @param $saveName
+     */
+    public function installSave($saveName)
+    {
+        if ($this->_isGameInstalled()) {
+            if ($this->isServerRunning())
+                $this->stopServer();
+
+            $moveNewSaveProcess = new Process('mv -f '. $saveName .' factorio/saves', '../var', null, null, 2, array());
+            $moveNewSaveProcess->run();
+
+            if (!$moveNewSaveProcess->isSuccessful()) {
+                throw new ProcessFailedException($moveNewSaveProcess);
+            }
+        } else {
+            throw new \Exception('The game is not installed yet.');
+        }
     }
 }

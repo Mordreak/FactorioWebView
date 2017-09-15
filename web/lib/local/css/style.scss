@@ -256,3 +256,27 @@
 .label.label-danger {
   cursor: pointer;
 }
+
+#savefile-upload {
+  margin-left: 20px;
+  @media all and(max-width: 1130px) {
+    margin: 0 auto;
+  }
+}
+
+#saves-input {
+  span {
+    display: block;
+    height: auto;
+    @media all and (max-width: 1130px) {
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+  span:not(:first-child) {
+    @media all and(max-width: 1130px) {
+      margin-top: 10px;
+    }
+  }
+}
