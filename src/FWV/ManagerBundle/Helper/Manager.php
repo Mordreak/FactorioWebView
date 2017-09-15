@@ -45,7 +45,7 @@ class Manager
                 return $process->getOutput();
             else {
                 $logger->error('timedOut: ' . $process->getOutput());
-                throw new \Exception('Impossible to start the server, please contact the author.');
+                throw new \Exception('Impossible to start the server, please check the logs.');
             }
         }
 
@@ -59,7 +59,7 @@ class Manager
 
         if (!$this->isServerRunning()) {
             $logger->error('Server not running: ' . './bin/x64/factorio --start-server ' . $saveName . ' > logs/' . $saveName . '.log &');
-            throw new \Exception('Impossible to start the server, please contact the author.');
+            throw new \Exception('Impossible to start the server, please check the logs.');
         }
 
         return $process->getOutput();
@@ -305,20 +305,20 @@ class Manager
         else
             throw new \InvalidArgumentException('Unrecognized tarball compression type');
 
-        $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 5, array());
+        $untarProcess = new Process('tar ' . $tarOptions . ' ' . $tarballName, '../var', null, null, 10, array());
         $untarProcess->run();
         if (!$untarProcess->isSuccessful()) {
             throw new ProcessFailedException($untarProcess);
         }
 
-        $mkdirProcess = new Process('mkdir saves && mkdir logs', '../var/factorio', null, null, 1, array());
+        $mkdirProcess = new Process('mkdir saves && mkdir logs && mkdir mods', '../var/factorio', null, null, 1, array());
         $mkdirProcess->run();
 
         if (!$mkdirProcess->isSuccessful()) {
             throw new ProcessFailedException($mkdirProcess);
         }
 
-        $backupSavesProcess = new Process('mv -f saves factorio/', '../var', null, null, 1, array());
+        $backupSavesProcess = new Process('mv -f saves/* factorio/saves/', '../var', null, null, 1, array());
         $backupSavesProcess->run();
 
         if (!$backupSavesProcess->isSuccessful()) {
@@ -330,6 +330,110 @@ class Manager
 
         if (!$rmTarballProcess->isSuccessful()) {
             throw new ProcessFailedException($rmTarballProcess);
+        }
+    }
+
+    public function toggleMod($mod)
+    {
+        if ($this->_isGameInstalled()) {
+            if ($this->_isModActivated($mod)) {
+                $uninstallProcess = new Process('rm -f mods/' . $mod . '.zip', '../var/factorio', null, null, 1, array());
+                $uninstallProcess->run();
+
+                if (!$uninstallProcess->isSuccessful()) {
+                    throw new ProcessFailedException($uninstallProcess);
+                }
+                return 'uninstalled';
+            } else {
+                $installProcess = new Process('cp -f mods/' . $mod . '.zip factorio/mods/', '../var', null, null, 1, array());
+                $installProcess->run();
+
+                if (!$installProcess->isSuccessful()) {
+                    throw new ProcessFailedException($installProcess);
+                }
+                return 'installed';
+            }
+        } else
+            throw new \InvalidArgumentException('The game is not installed yet');
+    }
+
+    public function getMods()
+    {
+        try {
+            $finder = new Finder();
+            $finder->files()->in('../var/mods')->name('*.zip')->sortByName();
+            $files = array();
+            $installedMods = $this->_getInstalledMods();
+            $i = 0;
+            foreach ($finder as $file) {
+                $files[$i]['name'] = substr($file->getRelativePathname(), 0, -4);
+                if (in_array($files[$i]['name'], $installedMods)) {
+                    $files[$i]['installed'] = true;
+                } else {
+                    $files[$i]['installed'] = false;
+                }
+                $i++;
+            }
+            return $files;
+        } catch (\InvalidArgumentException $e) {
+            return array();
+        }
+    }
+
+    protected function _getInstalledMods()
+    {
+        if (!$this->_isGameInstalled())
+            return array();
+        try {
+            $finder = new Finder();
+            $finder->files()->in('../var/factorio/mods')->name('*.zip')->sortByName();
+            $files = array();
+            foreach ($finder as $file) {
+                $files[] = substr($file->getRelativePathname(), 0, -4);
+            }
+            return $files;
+        } catch (\InvalidArgumentException $e) {
+            return array();
+        }
+    }
+
+    /**
+     * Check wether the given mod is activated or not
+     *
+     * @param $saveName
+     * @return bool
+     */
+    protected function _isModActivated($modName)
+    {
+        $finder = new Finder();
+        $finder->files()->in('../var/factorio/mods');
+
+        foreach ($finder as $file) {
+            if ($file->getRelativePathname() === $modName . '.zip')
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Installs a new savefile
+     *
+     * @param $saveName
+     */
+    public function installSave($saveName)
+    {
+        if ($this->_isGameInstalled()) {
+            if ($this->isServerRunning())
+                $this->stopServer();
+
+            $moveNewSaveProcess = new Process('mv -f '. $saveName .' factorio/saves', '../var', null, null, 2, array());
+            $moveNewSaveProcess->run();
+
+            if (!$moveNewSaveProcess->isSuccessful()) {
+                throw new ProcessFailedException($moveNewSaveProcess);
+            }
+        } else {
+            throw new \Exception('The game is not installed yet.');
         }
     }
 }

@@ -155,6 +155,12 @@ if [ "$PARAM" -le "5" ]; then
 echo -e "\n${PURPLE}05 CONFIGURING PERMISSIONS:"
 echo -e "========================${NC}\n"
 
+echo "rm -rf var/cache/*"
+rm -rf var/cache/*
+
+echo "rm -rf var/logs/*"
+rm -rf var/logs/*
+
 echo "chown -R www-data:www-data $PWD"
 chown -R www-data:www-data $PWD
 

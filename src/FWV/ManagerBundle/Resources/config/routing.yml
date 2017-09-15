@@ -37,3 +37,23 @@ fwv_manager_manage:
 fwv_manager_logs:
     path:     /logs
     defaults: { _controller: FWVManagerBundle:Manager:getLogs }
+
+fwv_manager_mod:
+    path:     /uploadMod
+    defaults: { _controller: FWVManagerBundle:Manager:uploadMod }
+
+fwv_manager_mods:
+    path:     /getMods
+    defaults: { _controller: FWVManagerBundle:Manager:getMods }
+
+fwv_manager_log_page:
+    path:     /log-manager
+    defaults: { _controller: FWVManagerBundle:Manager:logs }
+
+fwv_manager_toggle_mod:
+    path:     /activateMod
+    defaults: { _controller: FWVManagerBundle:Manager:toggleMod }
+
+fwv_manager_upload_save:
+    path:     /uploadSave
+    defaults: { _controller: FWVManagerBundle:Manager:uploadSave }

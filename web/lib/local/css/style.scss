@@ -185,7 +185,7 @@
   }
   #logs {
     min-width: 0;
-    max-height: 320px;
+    max-height: 600px;
     overflow-y: auto;
     display: block;
     tr {
@@ -198,7 +198,85 @@
     }
   }
 }
+#mod-table {
+  thead {
+    tr {
+      th {
+        span {
+          display: inline-block;
+          width: 90px;
+          padding: 0 8px 0 8px;
+        }
+        span:first-child {
+          width: 100%;
+          margin-right: -180px;
+          padding: 0;
+        }
+      }
+    }
+  }
+  #mods {
+    min-width: 0;
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+    tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      td:first-child {
+        width: 100%;
+        margin-right: -180px;
+        box-sizing: content-box;
+        padding-left: 8px;
+      }
+      td {
+        width: 90px;
+        padding-left: 0;
+      }
+    }
+  }
+}
 
 .table-responsive {
   overflow-x: hidden;
+}
+
+.mods-wrapper {
+  overflow-x: auto;
+  .table-responsive {
+    min-width: 400px;
+  }
+}
+
+.label.label-info {
+  cursor: pointer;
+}
+
+.label.label-danger {
+  cursor: pointer;
+}
+
+#savefile-upload {
+  margin-left: 20px;
+  @media all and(max-width: 1130px) {
+    margin: 0 auto;
+  }
+}
+
+#saves-input {
+  span {
+    display: block;
+    height: auto;
+    @media all and (max-width: 1130px) {
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+  span:not(:first-child) {
+    @media all and(max-width: 1130px) {
+      margin-top: 10px;
+    }
+  }
 }

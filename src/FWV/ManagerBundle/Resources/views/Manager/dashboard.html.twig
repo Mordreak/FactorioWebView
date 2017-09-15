@@ -88,9 +88,15 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="box-footer clearfix">
-                            <input type="text" name="message" placeholder="MyGreateGame ..." class="form-control" id="savename-input">
-                            <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Create a new game</a>
+                        <div class="box-footer clearfix" id="saves-input">
+                            <span>
+                                <input type="text" name="message" placeholder="MyGreateGame ..." class="form-control" id="savename-input">
+                                <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-creation-button">Create a new game</a>
+                            </span>
+                            <span>
+                                <input type="file" name="upload-save" class="form-control" accept=".zip" id="savefile-upload">
+                                <a href="javascript:" class="btn btn-sm btn-info btn-flat pull-left" id="save-upload-button">Upload a save</a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +104,7 @@
             <div class="box box-info">
                 <div class="box-header">
                     <i class="fa fa-folder"></i>
-                    <h3 class="box-title">Install Factorio (Factorio-headless.tar.xz)</h3>
+                    <h3 class="box-title">Install Factorio (Factorio-headless.tar(.xz | .gz))</h3>
                 </div>
                 <div class="box-body" id="file-upload-div">
                     {{ form_start(form, { 'action': path('fwv_manager_upload_game') }) }}
@@ -139,6 +145,31 @@
             var manageWidget = $('#start-and-stop').data('custom-startAndStop');
             $('#saves').on('click', 'tr td .label.label-info', function() {
                 manageWidget.start(this.id);
+            });
+            $("#save-upload-button").click(function(event) {
+                var fileSelect = document.getElementById('savefile-upload');
+                var files = fileSelect.files;
+                var formData = new FormData();
+                var file = files[0];
+                formData.append('upload-save', file, file.name);
+                $.ajax({
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    url: '{{ path('fwv_manager_upload_save') }}',
+                    data: formData,
+                    success: function(data) {
+                        savesWidget.saves('{{ path('fwv_manager_get_saves') }}');
+                    },
+                    error: function(data) {
+
+                    },
+                    complete: function() {
+
+                    }
+                });
+                return false;
             });
         });
     </script>

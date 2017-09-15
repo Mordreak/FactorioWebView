@@ -6,32 +6,34 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Manage
-                <small>Monitoring panel</small>
+                Manager
+                <small>Control panel</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li class="active">Manager</li>
             </ol>
+        </section>
+        <section class="content">
             <div class="row" id="manage-first-row">
                 <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Logs</h3>
+                            <h3 class="box-title">Mods</h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
-                        <div class="box-body" style="display: block;">
+                        <div class="box-body mods-wrapper" style="display: block;">
                             <div class="table-responsive">
-                                <table class="table no-margin" id="log-table">
+                                <table class="table no-margin" id="mod-table">
                                     <thead>
                                     <tr>
-                                        <th><span>Timestamp</span><span>Information</span></th>
+                                        <th><span>Name</span><span>Active</span><span>Toggle</span></th>
                                     </tr>
                                     </thead>
-                                    <tbody id="logs">
+                                    <tbody id="mods">
                                     </tbody>
                                 </table>
                             </div>
@@ -39,14 +41,71 @@
                     </div>
                 </div>
             </div>
+            <div class="box box-info">
+                <div class="box-header">
+                    <i class="fa fa-folder"></i>
+                    <h3 class="box-title">Add a mod (Activate it afterwards)</h3>
+                </div>
+                <div class="box-body" id="file-upload-div">
+                    {{ form_start(form, { 'action': path('fwv_manager_mod'), 'attr': { 'id': 'mod-upload' }}) }}
+                    <div class="form-group">
+                        {{ form_label(form.zipFile) }}
+                        {{ form_errors(form.zipFile) }}
+                        {{ form_widget(form.zipFile, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-default" id="install-button">Send <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </section>
     </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('lib/local/js/activateMod.js') }}"></script>
     <script>
         $(document).ready(function () {
-            getLogs('{{ path('fwv_manager_logs') }}');
+            getMods('{{ path('fwv_manager_mods') }}');
+            $('#mod-upload').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                var url = $(this).attr("action");
+                console.log(formData);
+                console.log(url);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function (data) {
+                        if (data['done'] == true) {
+                            popupMe('Mod successfully uploaded, you can now activate it');
+                            $('#mod-upload input').val('');
+                        } else {
+                            popupMe(data['reason']);
+                        }
+                    },
+                    error: function (data) {
+                        popupMe('An error as occured, please try again later');
+                    },
+                    complete: function (data) {
+
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+            $('#mods').activateMod({
+                activateUrl: '{{ path('fwv_manager_toggle_mod') }}'
+            });
+
+            var modsWidget = $('#mods').data('custom-activateMod');
+            $('#mods').on('click', 'tr td .label', function() {
+                modsWidget.toggle(this.id);
+            });
         });
     </script>
 {% endblock %}

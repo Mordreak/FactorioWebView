@@ -262,9 +262,19 @@ class ManagerController extends Controller
      */
     public function manageAction()
     {
-        return $this->render('FWVManagerBundle:Manager:manage.html.twig');
+        $form = $this->createFormBuilder()
+            ->add('zipFile', FileType::class, array('required' => true))
+            ->getForm();
+        return $this->render('FWVManagerBundle:Manager:manage.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
+    /**
+     * Gets the logs for the current last save
+     *
+     * @return JsonResponse
+     */
     public function getLogsAction()
     {
         try {
@@ -279,5 +289,151 @@ class ManagerController extends Controller
                 'done' => false
             ));
         }
+    }
+
+    /**
+     * Add a mod to the list of available mods
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function uploadModAction(Request $request)
+    {
+        try {
+            if ($request->getMethod() == 'POST') {
+                if (!$request->isXMLHttpRequest()) {
+                    return new Response('This is not ajax!', 400);
+                }
+                $form = $this->createFormBuilder()
+                    ->add('zipFile', FileType::class, array('required' => true))
+                    ->getForm();
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $zipFile = $form['zipFile']->getData()->getClientOriginalName();
+
+                    if (substr($zipFile, -4) != '.zip')
+                        throw new \InvalidArgumentException('The uploaded file is not a .zip file');
+
+                    $form['zipFile']->getData()->move('../var/mods', str_replace(' ', '', $zipFile));
+                    return new JsonResponse(array(
+                        'done' => true
+                    ));
+                } else {
+                    foreach ($form->getErrors() as $error) {
+                        $this->get('logger')->error($error->getMessage());
+                        throw new Exception($error->getMessage());
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            return new JsonResponse(array(
+                'done' => false,
+                'reason' => $e->getMessage()
+            ));
+        }
+    }
+
+    /**
+     * get all available mods
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function getModsAction(Request $request)
+    {
+        try {
+            if (!$request->isXMLHttpRequest()) {
+                return new Response('This is not ajax!', 400);
+            }
+            $mods = $this->container->get('fwv_manager.helper_manager')->getMods();
+            return new JsonResponse(array(
+                'done' => true,
+                'mods' => $mods
+            ));
+        } catch (Exception $e) {
+            return new JsonResponse(array(
+                'done' => false,
+                'reason' => $e->getMessage()
+            ));
+        }
+    }
+
+    /**
+     * Renders the manage page
+     *
+     * @return Response
+     */
+    public function logsAction()
+    {
+        return $this->render('FWVManagerBundle:Manager:logs.html.twig');
+    }
+
+    /**
+     * Activate/Disable a mod
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function toggleModAction(Request $request)
+    {
+        try {
+            if (!$request->isXMLHttpRequest()) {
+                return new Response('This is not ajax!', 400);
+            }
+            $modName = $request->get('modname');
+            return new JsonResponse(array(
+                'done' => true,
+                'action' => $this->container->get('fwv_manager.helper_manager')->toggleMod($modName)
+            ));
+        } catch (Exception $e) {
+            return new JsonResponse(array(
+                'done' => false,
+                'reason' => $e->getMessage()
+            ));
+        }
+    }
+
+    /**
+     * Handles the form which uploads a custom savefile.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function uploadSaveAction(Request $request)
+    {
+        try {
+            if (!$request->isXMLHttpRequest()) {
+                return new Response('This is not ajax!', 400);
+            }
+            if ($request->getMethod() == 'POST') {
+
+                $file = $request->files->get('upload-save');
+
+                if ($file) {
+                    $saveFileName = $file->getClientOriginalName();
+
+                    $file->move('../var', $saveFileName);
+
+                    try {
+                        $this->container->get('fwv_manager.helper_manager')->installSave($saveFileName);
+                    } catch (ProcessFailedException $e) {
+                        $this->get('logger')->error($e->getMessage());
+                    }
+                }
+                else {
+                    $this->get('logger')->error('File was missing from upload');
+                }
+            }
+        } catch (Exception $e) {
+            $this->get('logger')->error($e->getMessage());
+            return new JsonResponse(array(
+                'done' => false,
+                'reason' => $e->getMessage()
+            ));
+        }
+        return new JsonResponse(array(
+            'done' => true
+        ));
     }
 }

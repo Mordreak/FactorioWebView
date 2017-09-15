@@ -45,6 +45,7 @@
                     <li class="header">MAIN NAVIGATION</li>
                     {% block dashboard_list_item %}<li>{% endblock %}<a href="{{ path('fwv_manager_homepage') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                     {% block manage_list_item %}<li>{% endblock %}<a href="{{ path('fwv_manager_manage') }}"><i class="fa fa-wrench"></i> Manage</a></li>
+                    {% block logs_list_item %}<li>{% endblock %}<a href="{{ path('fwv_manager_log_page') }}"><i class="fa fa-exclamation-triangle"></i> Logs</a></li>
                 </ul>
             </section>
         </aside>
