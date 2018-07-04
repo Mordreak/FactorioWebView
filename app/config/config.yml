@@ -84,3 +84,11 @@ lexik_jwt_authentication:
     public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
     pass_phrase:      '%jwt_secret_pass%' # required for token creation, usage of an environment variable is recommended
     token_ttl:        3600
+
+nelmio_cors:
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600
