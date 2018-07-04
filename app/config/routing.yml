@@ -1,3 +1,7 @@
+fwv_api:
+    resource: "@FWVApiBundle/Resources/config/routing.yml"
+    prefix:   /api
+
 api_login_check:
     path: /api/login_check
 

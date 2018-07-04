@@ -11,6 +11,11 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
+        check:
+            pattern:  ^/api/check
+            stateless: true
+            anonymous: true
+
         login:
             pattern:  ^/api/login
             stateless: true
@@ -43,6 +48,7 @@ security:
                 path:     /
 
     access_control:
+        - { path: ^/api/check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

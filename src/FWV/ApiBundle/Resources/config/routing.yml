@@ -1,0 +1,3 @@
+fwv_api_check:
+    path:     /check
+    defaults: { _controller: FWVApiBundle:Default:check }

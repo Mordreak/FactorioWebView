@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FWV\ManagerBundle\FWVManagerBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new FWV\UserBundle\FWVUserBundle(),
+            new FWV\ApiBundle\FWVApiBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
