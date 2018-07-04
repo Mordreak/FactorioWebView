@@ -91,6 +91,7 @@ echo -e "========================${NC}\n"
 apt-get install php-intl
 apt-get install php-mysql
 apt-get install php-xml
+apt-get install xz-utils
 php composer.phar install
 
 echo "3" > installation.dat
