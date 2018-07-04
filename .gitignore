@@ -16,3 +16,4 @@
 /web/bundles/
 .idea/
 installation.dat
+composer.lock
