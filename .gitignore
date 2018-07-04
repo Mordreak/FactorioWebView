@@ -17,3 +17,4 @@
 .idea/
 installation.dat
 composer.lock
+config/*

@@ -1,3 +1,6 @@
+api_login_check:
+    path: /api/login_check
+
 fwv_manager:
     resource: "@FWVManagerBundle/Resources/config/routing.yml"
     prefix:   /
