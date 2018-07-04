@@ -1,3 +1,7 @@
 fwv_api_check:
     path:     /check
     defaults: { _controller: FWVApiBundle:Default:check }
+
+fwv_api_user_connected:
+    path:     /isUserConnected
+    defaults: { _controller: FWVApiBundle:Default:isUserConnected }

@@ -11,4 +11,14 @@ class DefaultController extends Controller
     {
         return new JsonResponse(array('isInstanceOfFWV' => true));
     }
+
+    public function isUserConnectedAction()
+    {
+        return new JsonResponse(
+            array(
+                'success' => true,
+                'userId' => $this->getUser()->getId()
+            )
+        );
+    }
 }
