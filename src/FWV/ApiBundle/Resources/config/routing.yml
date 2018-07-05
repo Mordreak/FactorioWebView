@@ -6,6 +6,10 @@ fwv_api_server_running:
     path:     /isServerRunning
     defaults: { _controller: FWVApiBundle:Default:isServerRunning }
 
-fwv_api_server_start:
+fwv_api_server_stop:
     path:     /stopServer
     defaults: { _controller: FWVApiBundle:Default:stopServer }
+
+fwv_api_server_start:
+    path:     /startServer
+    defaults: { _controller: FWVApiBundle:Default:startServer }

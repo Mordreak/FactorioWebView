@@ -38,10 +38,38 @@ class DefaultController extends Controller
             if (!$manager->isServerRunning()) {
                 return new JsonResponse(array(
                     'success' => false,
-                    'answer' => 'Server is not started'
+                    'error' => 'Server is not started'
                 ), 412);
             }
             $manager->stopServer();
+        } catch (\Exception $e) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => $e->getMessage()
+            ), 500);
+        }
+        return new JsonResponse(array(
+            'success' => true
+        ));
+    }
+
+    /**
+     * Starts the server
+     *
+     * @return JsonResponse
+     */
+    public function startServerAction()
+    {
+        $manager = $this->container->get('fwv_manager.helper_manager');
+
+        try {
+            if ($manager->isServerRunning()) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'answer' => 'Server already started'
+                ), 412);
+            }
+            $manager->startServer(null, $this->get('logger'));
         } catch (\Exception $e) {
             return new JsonResponse(array(
                 'success' => false,
@@ -50,6 +78,6 @@ class DefaultController extends Controller
         }
         return new JsonResponse(array(
             'success' => true
-        ));
+        ), 200);
     }
 }
