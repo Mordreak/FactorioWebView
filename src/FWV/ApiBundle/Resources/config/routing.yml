@@ -5,3 +5,7 @@ fwv_api_check:
 fwv_api_server_running:
     path:     /isServerRunning
     defaults: { _controller: FWVApiBundle:Default:isServerRunning }
+
+fwv_api_server_start:
+    path:     /stopServer
+    defaults: { _controller: FWVApiBundle:Default:stopServer }
