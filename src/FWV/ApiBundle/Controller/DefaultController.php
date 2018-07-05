@@ -12,13 +12,17 @@ class DefaultController extends Controller
         return new JsonResponse(array('isInstanceOfFWV' => true));
     }
 
-    public function isUserConnectedAction()
+    public function isServerRunningAction()
     {
-        return new JsonResponse(
-            array(
-                'success' => true,
-                'userId' => $this->getUser()->getId()
-            )
-        );
+        $manager = $this->container->get('fwv_manager.helper_manager');
+        $result = array();
+
+        try {
+            $result['isServerRunning'] = $manager->isServerRunning();
+        } catch (\Exception $e) {
+            $result['isServerRunning'] = false;
+        }
+
+        return new JsonResponse($result);
     }
 }
