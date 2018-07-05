@@ -50,7 +50,7 @@ class DefaultController extends Controller
         }
         return new JsonResponse(array(
             'success' => true
-        ));
+        ), 200);
     }
 
     /**
