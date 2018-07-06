@@ -13,3 +13,7 @@ fwv_api_server_stop:
 fwv_api_server_start:
     path:     /startServer
     defaults: { _controller: FWVApiBundle:Default:startServer }
+
+fwv_api_get_logs:
+    path:     /getLogs
+    defaults: { _controller: FWVApiBundle:Default:getLogs }

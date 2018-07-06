@@ -80,4 +80,26 @@ class DefaultController extends Controller
             'success' => true
         ), 200);
     }
+
+    /**
+     * Gets the logs for the current last save
+     *
+     * @return JsonResponse
+     */
+    public function getLogsAction()
+    {
+        try {
+            $parser = $this->container->get('fwv_manager.helper_parser');
+            $logs = $parser->parseLog();
+            return new JsonResponse(array(
+                'success' => true,
+                'logs' => $logs
+            ), 200);
+        } catch (\Exception $e) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => $e
+            ), 500);
+        }
+    }
 }

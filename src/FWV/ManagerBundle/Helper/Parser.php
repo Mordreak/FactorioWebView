@@ -21,7 +21,10 @@ class Parser
         $files = $finder->files()->in('../var/factorio/logs')->name('*.log')->sortByAccessedTime();
         foreach ($files as $file)
             $logFile = $file;
-        $lines = explode("\n", $logFile->getContents());
+        if ($logFile)
+            $lines = explode("\n", $logFile->getContents());
+        else
+            $lines = array();
         $key = 0;
         foreach ($lines as $line) {
             try {
